@@ -45,6 +45,11 @@ public class AvlTree <E, K> {
 		 */
 		private Node<E> nextNode;
 
+		/**
+		 * Высота поддерева, с корнем в данном узле.
+		 */
+		private int subtreeHeight;
+
 	// constructors
 
 		/**
