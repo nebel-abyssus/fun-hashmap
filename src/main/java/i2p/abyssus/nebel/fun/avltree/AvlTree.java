@@ -2,6 +2,7 @@ package i2p.abyssus.nebel.fun.avltree;
 
 import java.util.Comparator;
 import java.util.Deque;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -123,10 +124,19 @@ public class AvlTree <E, K> {
 
 // constructors
 
-	private AvlTree (
-	) { // method body
-		// todo
-		throw new NoSuchMethodError();
+	/**
+	 * Конструктор АВЛ-дерева.
+	 * @param keyExtractor Экстрактор ключей.
+	 * @param keyComparator Компаратор ключей.
+	 * @throws NullPointerException Если любой из аргументов не существует.
+	 */
+	public AvlTree (
+		final Function<? super E, ? extends K> keyExtractor,
+		final Comparator<? super K> keyComparator
+	) throws NullPointerException
+	{ // method body
+		this.keyExtractor = Objects.<Function<? super E, ? extends K>>requireNonNull(keyExtractor);
+		this.keyComparator = Objects.<Comparator<? super K>>requireNonNull(keyComparator);
 	} // AvlTree()
 
 	// todo
