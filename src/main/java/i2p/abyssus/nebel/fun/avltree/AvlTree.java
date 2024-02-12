@@ -1,5 +1,9 @@
 package i2p.abyssus.nebel.fun.avltree;
 
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.function.Function;
+
 /**
  * Реализация <a href="https://ru.wikipedia.org/wiki/%D0%90%D0%92%D0%9B-%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D0%BE">АВЛ-дерева</a>.
  * <p>Дерево представлено узлами. Узлы дополнительно образуют двусвязный список. Ключи элементов в списке узлов, упорядочены от меньших к большим. Дерево может принимать в качестве элементов значения {@code null}, если указанный при создании дерева экстрактор ключей принимает значения {@code null}.</p>
@@ -62,6 +66,65 @@ public class AvlTree <E, K> {
 		} // Node()
 
 	} // Node
+
+// instance fields
+
+	/**
+	 * Экстрактор ключей.
+	 */
+	private final Function<? super E, ? extends K> keyExtractor;
+
+	/**
+	 * Компаратор ключей.
+	 */
+	private final Comparator<? super K> keyComparator;
+
+	/**
+	 * Корень дерева. Существует, если дерево не пусто.
+	 */
+	private Node<E> rootNode;
+
+	/**
+	 * Самый левый узел. Существует, если дерево не пусто.
+	 */
+	private Node<E> leftmostNode;
+
+	/**
+	 * Самый правый узел. Существует, если дерево не пусто.
+	 */
+	private Node<E> rightmostNode;
+
+	/**
+	 * Версия дерева.
+	 * <p>Необходима для правильной работы итераторов. Увеличивается при каждой модификации.</p>
+	 */
+	private long version;
+
+	/**
+	 * Размер дерева.
+	 * <p>Поле содержит число узлов в дереве. Значение поля не должно превышать {@link Integer#MAX_VALUE}.</p>
+	 */
+	private int size;
+
+	/**
+	 * Последний найденный путь.
+	 * <p>Кеш пути к последнему искомому узлу. Обновляется при поиске узла с любым ключом отличным от запрошенного в последний раз. Сбрасывается при любой модификации дерева.</p>
+	 */
+	private Deque<Node<E>> lastFoundPath;
+
+	/**
+	 * Последний искомый ключ.
+	 * <p>Значение последнего запрошенного ключа. Необходимо для нормальной работы кеша пути к ключу. Используется только в случае, когда сам кеш не сброшен. Обновляется при поиске узла с любым отличным ключом. Сбрасывается при любой модификации дерева.</p>
+	 */
+	private K lastSearchedKey;
+
+// constructors
+
+	private AvlTree (
+	) { // method body
+		// todo
+		throw new NoSuchMethodError();
+	} // AvlTree()
 
 	// todo
 } // AvlTree
