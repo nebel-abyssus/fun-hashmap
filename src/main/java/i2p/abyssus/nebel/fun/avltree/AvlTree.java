@@ -1,5 +1,6 @@
 package i2p.abyssus.nebel.fun.avltree;
 
+import java.util.ArrayDeque;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.Objects;
@@ -138,6 +139,51 @@ public class AvlTree <E, K> {
 		this.keyExtractor = Objects.<Function<? super E, ? extends K>>requireNonNull(keyExtractor);
 		this.keyComparator = Objects.<Comparator<? super K>>requireNonNull(keyComparator);
 	} // AvlTree()
+
+// instance methods
+
+	/**
+	 * Поиск пути к узлу.
+	 * <p>Метод находит и возвращает путь к узлу ключ элемента которого, равен указанному. Отношения ключей определяются компаратором.</p>
+	 * <p>Путь укладывается на стек начиная с корня дерева, и заканчивая самим искомым узлом, либо его возможным родителем, если узла с указанным ключом не существует.</p>
+	 * @param key Ключ элемента искомого узла.
+	 * @return Путь к узлу c искомым ключом.
+	 */
+	private Deque<Node<E>> findPathByKey (
+		final K key
+	) { // method body
+		final Deque<Node<E>> path;
+		if ((lastFoundPath != null) && (keyComparator.compare(lastSearchedKey, key) == 0)) {
+			path = lastFoundPath;
+		} else {
+			path = new ArrayDeque<Node<E>>();
+			if (rootNode != null) {
+				int keyComparingResult;
+				Node<E> nextNode = rootNode;
+				do {
+					path.push(nextNode);
+					keyComparingResult = keyComparator.compare(key, keyExtractor.apply(nextNode.item));
+					nextNode = (keyComparingResult < 0) ? nextNode.leftChild : nextNode.rightChild;
+				} while ((nextNode != null) && (keyComparingResult != 0));
+			} // if
+			lastFoundPath = path;
+			lastSearchedKey = key;
+		} // if
+		return path;
+	} // findPathByKey()
+
+	/**
+	 * Поиск пути к узлу.
+	 * <p>Метод находит и возвращает путь к узлу с равным по ключу элементом. Отношения ключей определяются компаратором.</p>
+	 * <p>Путь укладывается на стек начиная с корня дерева, и заканчивая искомым узлом, либо его возможным родителем, если узла содержащего элемент с равным ключом в дереве нет.</p>
+	 * @param item Элемент с искомым ключом.
+	 * @return Путь к узлу содержащему элемент c искомым ключом.
+	 */
+	private Deque<Node<E>> findPath (
+		final E item
+	) { // method body
+		return findPathByKey(keyExtractor.apply(item));
+	} // findPath()
 
 	// todo
 } // AvlTree
