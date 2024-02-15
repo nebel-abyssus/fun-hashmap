@@ -151,8 +151,15 @@ public class AvlTree <E, K> {
 	public E findItemByKey (
 		final K key
 	) { // method body
-		// todo
-		throw new NoSuchMethodError();
+		final Deque<Node<E>> path = findPathByKey(key);
+		E item = null;
+		if (!path.isEmpty()) {
+			final E lastNodeItem = path.peek().item;
+			if (keyComparator.compare(key, keyExtractor.apply(lastNodeItem)) == 0) {
+				item = lastNodeItem;
+			} // if
+		} // if
+		return item;
 	} // findItemByKey()
 
 	public E add (
