@@ -5,7 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 
 public class AvlTreeTests {
 
@@ -13,6 +15,8 @@ public class AvlTreeTests {
 
 	private Function<Integer, Integer> keyExtractor;
 	private Comparator<Integer> keyComparator;
+	private RandomGenerator rng;
+	private AvlTree<Integer, Integer> tree;
 
 // instance methods
 
@@ -21,6 +25,8 @@ public class AvlTreeTests {
 	) { // method body
 		keyExtractor = Function.<Integer>identity();
 		keyComparator = Comparator.<Integer>naturalOrder();
+		rng = ThreadLocalRandom.current();
+		tree = new AvlTree<Integer, Integer>(keyExtractor, keyComparator);
 	} // testInit()
 
 	@Test
@@ -40,6 +46,61 @@ public class AvlTreeTests {
 	) { // method body
 		Assertions.assertDoesNotThrow(() -> new AvlTree<Integer, Integer>(keyExtractor, keyComparator));
 	} // constructor_validArguments_notThrows()
+
+	/**
+	 * В пустом дереве не должно найтись никакого элемента.
+	 */
+	@Test
+	public void findItemByKey_emptyTree_nothingFound (
+	) { // method body
+		// arrange
+		final Integer key = rng.nextInt();
+		// act
+		final Integer foundItem = tree.findItemByKey(key);
+		// assert
+		Assertions.assertNull(foundItem, "In the empty tree was found an item");
+	} // findItemByKey_emptyTree_nothingFound()
+
+	/**
+	 * Дерево содержит элементы 1, 3, 5, 7, 9. Элемент 7 должен быть найден.
+	 */
+	@Test
+	public void findItemByKey_treeContains13579_found7 (
+	) { // method body
+		// arrange
+		tree.add(1);
+		tree.add(3);
+		tree.add(5);
+		tree.add(7);
+		tree.add(9);
+		final Integer seven = 7;
+		final Integer key = keyExtractor.apply(seven);
+		// act
+		final Integer foundItem = tree.findItemByKey(key);
+		// assert
+		Assertions.assertNotNull(foundItem, "In the tree containing 7, 7 was not found");
+		Assertions.assertEquals(seven, foundItem, "In the tree containing 7, for key of 7, was found not 7");
+	} // findItemByKey_treeContains357_found7()
+
+	/**
+	 * Дерево содержит элементы 1, 3, 5, 7, 9. Элемент 2 не должен быть найден.
+	 */
+	@Test
+	public void findItemByKey_treeContains13579_notFound2 (
+	) { // method body
+		// arrange
+		tree.add(1);
+		tree.add(3);
+		tree.add(5);
+		tree.add(7);
+		tree.add(9);
+		final Integer two = 2;
+		final Integer key = keyExtractor.apply(two);
+		// act
+		final Integer foundItem = tree.findItemByKey(key);
+		// assert
+		Assertions.assertNull(foundItem, "In the tree not containing 2, an item with key of 2 was found");
+	} // findItemByKey_treeContains13579_notFound2()
 
 	// todo
 } // AvlTreeTests
