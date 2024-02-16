@@ -162,6 +162,18 @@ public class AvlTree <E, K> {
 		return item;
 	} // findItemByKey()
 
+	/**
+	 * Поиск элемента.
+	 * <p>Метод находит в дереве и возвращает элемент с ключом равным ключу указанного элемента. Если такой элемент отсутствует, возвращается значение {@code null}. Отношения ключей определяются компаратором.</p>
+	 * @param item Элемент с искомым ключом.
+	 * @return Элемент с ключом равным ключу указанного элемента, или значение {@code null}.
+	 */
+	public E findItem (
+		final E item
+	) { // method body
+		return findItemByKey(keyExtractor.apply(item));
+	} // findItem()
+
 	public E put (
 		final E item
 	) { // method body
