@@ -162,12 +162,12 @@ public class AvlTree <E, K> {
 		return item;
 	} // findItemByKey()
 
-	public E add (
+	public E put (
 		final E item
 	) { // method body
 		// todo
 		throw new NoSuchMethodError();
-	} // add()
+	} // put()
 
 	/**
 	 * Поиск пути к узлу.

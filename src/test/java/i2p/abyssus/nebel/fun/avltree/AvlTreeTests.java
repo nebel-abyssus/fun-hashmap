@@ -68,11 +68,11 @@ public class AvlTreeTests {
 	public void findItemByKey_treeContains13579_found7 (
 	) { // method body
 		// arrange
-		tree.add(1);
-		tree.add(3);
-		tree.add(5);
-		tree.add(7);
-		tree.add(9);
+		tree.put(1);
+		tree.put(3);
+		tree.put(5);
+		tree.put(7);
+		tree.put(9);
 		final Integer seven = 7;
 		final Integer key = keyExtractor.apply(seven);
 		// act
@@ -89,11 +89,11 @@ public class AvlTreeTests {
 	public void findItemByKey_treeContains13579_notFound2 (
 	) { // method body
 		// arrange
-		tree.add(1);
-		tree.add(3);
-		tree.add(5);
-		tree.add(7);
-		tree.add(9);
+		tree.put(1);
+		tree.put(3);
+		tree.put(5);
+		tree.put(7);
+		tree.put(9);
 		final Integer two = 2;
 		final Integer key = keyExtractor.apply(two);
 		// act
