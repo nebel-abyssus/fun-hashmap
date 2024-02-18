@@ -70,6 +70,24 @@ public class AvlTree <E, K> {
 			// do nothing
 		} // Node()
 
+		/**
+		 * Конструктор узла дерева.
+		 * <p>Конструктор выполняет инициализацию поля хранимого элемента и ссылок на предшествующий и следующий узлы в цепочке. Ссылки на дочерние узлы остаются пустыми, что логично, так как дочерние узлы могут быть либо добавлены, либо изменены во время ребалансировки дерева. Так как созданный узел не имеет дочерних узлов, то высота поддерева с корнем в этом узле, равна единице.</p>
+		 * @param item Хранимый элемент.
+		 * @param previousNode Предшествующий узел цепочки.
+		 * @param nextNode Следующий узел цепочки.
+		 */
+		private Node (
+			final E item,
+			final Node<E> previousNode,
+			final Node<E> nextNode
+		) { // method body
+			this.item = item;
+			this.previousNode = previousNode;
+			this.nextNode = nextNode;
+			this.subtreeHeight = 1;
+		} // Node()
+
 	} // Node
 
 // instance fields
