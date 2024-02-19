@@ -155,5 +155,36 @@ public class AvlTreeTests {
 		Assertions.assertNull(foundItem, "In the tree not containing 2, 2 was found");
 	} // findItem_treeContains13579_notFound2()
 
+	/**
+	 * Дерево содержит элемент 1. Помещаем элемент 2. Замены элементов быть не должно.
+	 */
+	@Test
+	public void put_treeContains1_put2_returnNull (
+	) { // method body
+		// arrange
+		tree.put(1);
+		final Integer item = 2;
+		// act
+		final Integer replacedItem = tree.put(item);
+		// assert
+		Assertions.assertNull(replacedItem, "In tree not containing 2, item 2 replace an item");
+	} // put_treeContains1_put2_returnNull()
+
+	/**
+	 * Дерево содержит некоторый элемент. Помещаем элемент с тем же ключом. Заменяем уже существующий элемент.
+	 */
+	@Test
+	public void put_treeContains1_put1_replace1 (
+	) { // method body
+		// arrange
+		final Integer someItem = rng.nextInt();
+		final Integer newItem = Integer.valueOf(someItem);
+		tree.put(someItem);
+		// act
+		final Integer replacedItem = tree.put(newItem);
+		// assert
+		Assertions.assertSame(someItem, replacedItem, "Placed item replace an item with different key");
+	} // put_treeContains1_put1_replace1()
+
 	// todo
 } // AvlTreeTests
