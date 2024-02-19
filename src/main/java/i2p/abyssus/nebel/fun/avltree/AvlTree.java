@@ -242,5 +242,50 @@ public class AvlTree <E, K> {
 		return findPathByKey(keyExtractor.apply(item));
 	} // findPath()
 
+	/**
+	 * Присоединение дочернего узла.
+	 * <p>Метод создает и присоединяет к указанному родительскому узлу новый дочерний узел, содержащий указанный элемент. Никаких проверок не производится, поэтому вызывающий код должен удостоверится, что указанный родительский узел может выступать родителем дочернего узла с указанным содержимым (элементом).</p>
+	 * <p>При присоединении дочернего узла, метод определяет свободную ветку родительского узла, присоединяя к ней новый дочерний узел. Поскольку никаких проверок на допустимость не производится, указанный родительский узел должен содержать свободную дочернюю ветку с подходящей для указанного элемента стороны, иначе произойдёт нарушение логической структуры дерева. Если обе дочерние ветки свободны, нужная определяется сравнением ключей элементов. Кроме прикрепления к родительскому узлу, метод встраивает созданный узел в цепочку узлов, в зависимости от занимаемой дочерней ветки. При необходимости проводится коррекция ссылок на крайние узлы цепочки.</p>
+	 * <p>По окончании работы, метод возвращает созданный дочерний узел.</p>
+	 * @param parentNode Родительский узел.
+	 * @param item Элемент нового узла.
+	 * @return Созданный дочерний узел.
+	 * @throws NullPointerException Если указанный родительский узел не существует.
+	 */
+	private Node<E> linkChildNode (
+		final Node<E> parentNode,
+		final E item
+	) throws NullPointerException
+	{ // method body
+		final Node<E> newNode;
+		if ((parentNode.rightChild != null)
+			|| ((parentNode.leftChild == null)
+				&& (keyComparator.compare(keyExtractor.apply(item), keyExtractor.apply(parentNode.item)) < 0)))
+		{ // if block
+			// new node is left child node
+			newNode = new Node<E>(item, parentNode.previousNode, parentNode);
+			parentNode.leftChild = newNode;
+			parentNode.previousNode = newNode;
+			if (newNode.previousNode != null) {
+				newNode.previousNode.nextNode = newNode;
+			} else {
+				// only the leftmost node does not have a previous node
+				leftmostNode = newNode;
+			} // if
+		} else {
+			// new node is right child node
+			newNode = new Node<E>(item, parentNode, parentNode.nextNode);
+			parentNode.rightChild = newNode;
+			parentNode.nextNode = newNode;
+			if (newNode.nextNode != null) {
+				newNode.nextNode.previousNode = newNode;
+			} else {
+				// only the rightmost node does not have a next node
+				rightmostNode = newNode;
+			} // if
+		} // if
+		return newNode;
+	} // linkChildNode()
+
 	// todo
 } // AvlTree
