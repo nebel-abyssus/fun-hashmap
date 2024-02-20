@@ -192,11 +192,40 @@ public class AvlTree <E, K> {
 		return findItemByKey(keyExtractor.apply(item));
 	} // findItem()
 
+	/**
+	 * Помещение элемента в дерево.
+	 * <p>Метод помещает элемент в дерево. Если элемент с таким же ключом уже есть в дереве, он заменяется указанным.</p>
+	 * <p>Метод возвращает либо заменяемый элемент с тем же ключом, либо, если элемента с таким ключом в дереве нет, значение {@code null}.</p>
+	 * @param item Помещаемый в дерево элемент.
+	 * @return Заменяемый элемент с тем же ключом, либо значение {@code null}.
+	 */
 	public E put (
 		final E item
 	) { // method body
-		// todo
-		throw new NoSuchMethodError();
+		E replacedItem = null;
+		if (rootNode != null) {
+			final Deque<Node<E>> path = findPath(item);
+			final Node<E> targetNode = path.peek();
+			if (keyComparator.compare(keyExtractor.apply(item), keyExtractor.apply(targetNode.item)) != 0) {
+				linkChildNode(targetNode, item);
+				rebalancing(path);
+				size++;
+				lastFoundPath = null;
+				lastSearchedKey = null;
+			} else {
+				replacedItem = targetNode.item;
+				targetNode.item = item;
+			} // if
+		} else {
+			rootNode = new Node<E>(item, null, null);
+			leftmostNode = rootNode;
+			rightmostNode = rootNode;
+			size++;
+			lastFoundPath = null;
+			lastSearchedKey = null;
+		} // if
+		version++;
+		return replacedItem;
 	} // put()
 
 	/**
@@ -286,6 +315,13 @@ public class AvlTree <E, K> {
 		} // if
 		return newNode;
 	} // linkChildNode()
+
+	private void rebalancing (
+		final Deque<Node<E>> path
+	) { // method body
+		// todo
+		throw new NoSuchMethodError();
+	} // rebalancing()
 
 	// todo
 } // AvlTree
