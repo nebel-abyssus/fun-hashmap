@@ -90,6 +90,20 @@ public class AvlTree <E, K> {
 
 	} // Node
 
+// static methods
+
+	/**
+	 * Высота поддерева.
+	 * <p>Метод, принимая ссылку на узел, возвращает высоту поддерева с корнем в этом узле. Высота несуществующего поддерева равна нулю. Метод не обходит поддерево, а лишь считывает высоту из поля корневого узла.</p>
+	 * @param root Корень поддерева.
+	 * @return Высота поддерева.
+	 */
+	private static int subtreeHeight (
+		final Node<?> root
+	) { // method body
+		return (root != null) ? root.subtreeHeight : 0;
+	} // subtreeHeight()
+
 // instance fields
 
 	/**
