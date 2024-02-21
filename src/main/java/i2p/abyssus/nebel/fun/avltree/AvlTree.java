@@ -104,6 +104,21 @@ public class AvlTree <E, K> {
 		return (root != null) ? root.subtreeHeight : 0;
 	} // subtreeHeight()
 
+	/**
+	 * Коррекция высоты поддерева.
+	 * <p>Метод рассчитывает, корректирует и возвращает высоту поддерева в указанном корневом узле, основываясь на высотах его дочерних веток.</p>
+	 * @param root Корень поддерева.
+	 * @return Новая высота поддерева.
+	 * @throws NullPointerException Если указанный корень поддерева не существует.
+	 */
+	private static int heightCorrection (
+		final Node<?> root
+	) throws NullPointerException
+	{ // method body
+		root.subtreeHeight = Math.max(subtreeHeight(root.leftChild), subtreeHeight(root.rightChild)) + 1;
+		return root.subtreeHeight;
+	} // heightCorrection()
+
 // instance fields
 
 	/**
