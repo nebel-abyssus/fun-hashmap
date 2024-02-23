@@ -345,6 +345,42 @@ public class AvlTree <E, K> {
 		return newNode;
 	} // linkChildNode()
 
+	/**
+	 * Замена узла.
+	 * <p>Метод заменяет ссылку на один из дочерних узлов, в указанном родительском узле. Родительский узел должен содержать ссылку на заменяемый узел, а заменяемый узел должен существовать, так как в противном случае, если родительский узел ещё не имеет ни одного дочернего узла, возникнет неоднозначность, которую метод будет не в силах правильно разрешить.</p>
+	 * <p>Если указанный родительский узел не существует, то заменяется корень дерева.</p>
+	 * <p>Если ссылки на заменяемый и заменяющий узлы совпадают, метод не совершает никаких действий.</p>
+	 * @param parentNode Родительский узел.
+	 * @param replaceableNode Заменяемый узел.
+	 * @param replacementNode Заменяющий узел.
+	 * @throws AssertionError Если включены операторы контроля и верно одно из условий:<ul>
+	 *     <li>Заменяемый узел не существует.</li>
+	 *     <li>Родительский узел не содержит ссылку на заменяемый дочерний узел.</li>
+	 *     <li>Родительский узел не существует и корень дерева не является заменяемым узлом.</li>
+	 * </ul>
+	 */
+	private void replaceNode (
+		final Node<E> parentNode,
+		final Node<E> replaceableNode,
+		final Node<E> replacementNode
+	) throws AssertionError
+	{ // method body
+		assert replaceableNode != null;
+		assert (parentNode == null) || ((parentNode.leftChild == replaceableNode) || (parentNode.rightChild == replaceableNode));
+		assert (parentNode != null) || (rootNode == replaceableNode);
+		if (replaceableNode != replacementNode) {
+			if (parentNode != null) {
+				if (parentNode.leftChild == replaceableNode) {
+					parentNode.leftChild = replacementNode;
+				} else {
+					parentNode.rightChild = replacementNode;
+				} // if
+			} else {
+				rootNode = replacementNode;
+			} // if
+		} // if
+	} // replaceNode()
+
 	private void rebalancing (
 		final Deque<Node<E>> path
 	) { // method body
