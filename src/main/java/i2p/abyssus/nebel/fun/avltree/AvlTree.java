@@ -405,12 +405,73 @@ public class AvlTree <E, K> {
 		} // if
 	} // rebalancing()
 
+	/**
+	 * Метод балансировки поддерева.
+	 * <p>Принимая ссылку на корень поддерева, метод производит балансировку, возвращая новый корень поддерева.</p>
+	 * <p>Высота заявленная в указанном корне, может не соответствовать фактической высоте поддерева, однако во время выполнения метода, высоты будут скорректированы.</p>
+	 * @param root Корень поддерева.
+	 * @return Новый корень поддерева.
+	 * @throws NullPointerException Если указанный корень не существует.
+	 */
 	private Node<E> balance (
-		final Node<E> subtreeRoot
-	) { // method body
+		final Node<E> root
+	) throws NullPointerException
+	{ // method body
+		final Node<E> newRoot;
+		final int leftChildHeight = subtreeHeight(root.leftChild);
+		final int rightChildHeight = subtreeHeight(root.rightChild);
+		if (Math.abs(leftChildHeight - rightChildHeight) > 1) {
+			if (leftChildHeight < rightChildHeight) {
+				if (subtreeHeight(root.rightChild.leftChild) <= subtreeHeight(root.rightChild.rightChild)) {
+					newRoot = zig(root);
+				} else {
+					newRoot = zigZag(root);
+				} // if
+			} else {
+				if (subtreeHeight(root.leftChild.rightChild) <= subtreeHeight(root.leftChild.leftChild)) {
+					newRoot = zag(root);
+				} else {
+					newRoot = zagZig(root);
+				} // if
+			} // if
+		} else {
+			root.subtreeHeight = Math.max(leftChildHeight, rightChildHeight) + 1;
+			newRoot = root;
+		} // if
+		return newRoot;
+	} // balance()
+
+	private Node<E> zig (
+		final Node<E> root
+	) throws NullPointerException
+	{ // method body
 		// todo
 		throw new NoSuchMethodError();
-	} // balance()
+	} // zig()
+
+	private Node<E> zigZag (
+		final Node<E> root
+	) throws NullPointerException
+	{ // method body
+		// todo
+		throw new NoSuchMethodError();
+	} // zigZag()
+
+	private Node<E> zag (
+		final Node<E> root
+	) throws NullPointerException
+	{ // method body
+		// todo
+		throw new NoSuchMethodError();
+	} // zag()
+
+	private Node<E> zagZig (
+		final Node<E> root
+	) throws NullPointerException
+	{ // method body
+		// todo
+		throw new NoSuchMethodError();
+	} // zagZig()
 
 	// todo
 } // AvlTree
