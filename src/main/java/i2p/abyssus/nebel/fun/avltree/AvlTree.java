@@ -381,12 +381,36 @@ public class AvlTree <E, K> {
 		} // if
 	} // replaceNode()
 
+	/**
+	 * Ребалансировка пути в дереве.
+	 * <p>Метод принимает путь в дереве, и производит ребалансировку узлов на этом пути. Во время ребалансировки путь разрушается. Во время ребалансировки может произойти смена корня дерева.</p>
+	 * <p>Метод не производит проверок корректности пути, возлагая эту обязанность на вызывающий код.</p>
+	 * @param path Путь ребалансировки.
+	 * @throws NullPointerException Если указанный путь не существует.
+	 */
 	private void rebalancing (
 		final Deque<Node<E>> path
+	) throws NullPointerException
+	{ // method body
+		if (!path.isEmpty()) {
+			int oldSubtreeHeight;
+			int newSubtreeHeight;
+			do {
+				final Node<E> oldRoot = path.pop();
+				oldSubtreeHeight = oldRoot.subtreeHeight;
+				final Node<E> newRoot = balance(oldRoot);
+				newSubtreeHeight = newRoot.subtreeHeight;
+				replaceNode(path.peek(), oldRoot, newRoot);
+			} while ((!path.isEmpty()) && (newSubtreeHeight != oldSubtreeHeight));
+		} // if
+	} // rebalancing()
+
+	private Node<E> balance (
+		final Node<E> subtreeRoot
 	) { // method body
 		// todo
 		throw new NoSuchMethodError();
-	} // rebalancing()
+	} // balance()
 
 	// todo
 } // AvlTree
