@@ -441,12 +441,25 @@ public class AvlTree <E, K> {
 		return newRoot;
 	} // balance()
 
+	/**
+	 * Малое левое вращение.
+	 * <p>Метод осуществляет малое левое вращение указанного поддерева. Заявленные высоты старого и нового корней пересчитаны. Расчёт новых высот не принимает во внимание заявленную в корне высоту поддерева. Возвращается новый корень поддерева.</p>
+	 * @param root Корень вращаемого поддерева.
+	 * @return Новый корень поддерева.
+	 * @throws NullPointerException Если указанный корень, либо его правый дочерний узел не существует.
+	 */
 	private Node<E> zig (
 		final Node<E> root
 	) throws NullPointerException
 	{ // method body
-		// todo
-		throw new NoSuchMethodError();
+		final Node<E> a = root;
+		final Node<E> b = a.rightChild;
+		final Node<E> c = b.leftChild;
+		a.rightChild = c;
+		b.leftChild = a;
+		a.subtreeHeight = subtreeHeight(c) + 1;
+		b.subtreeHeight = a.subtreeHeight + 1;
+		return b;
 	} // zig()
 
 	private Node<E> zigZag (
