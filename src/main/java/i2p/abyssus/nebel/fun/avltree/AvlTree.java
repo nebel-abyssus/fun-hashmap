@@ -507,12 +507,28 @@ public class AvlTree <E, K> {
 		return b;
 	} // zag()
 
+	/**
+	 * Большое правое вращение.
+	 * <p>Метод осуществляет большое правое вращение указанного поддерева. Заявленные высоты изменяемых узлов обновляются. Расчёт новых высот не принимает во внимание заявленную в корне высоту поддерева. Возвращается новый корень поддерева.</p>
+	 * @param root Корень вращаемого поддерева.
+	 * @return Новый корень поддерева.
+	 * @throws NullPointerException Если указанный корень, либо его левый дочерний узел, либо правый дочерний узел левого дочернего узла корня не существует.
+	 */
 	private Node<E> zagZig (
 		final Node<E> root
 	) throws NullPointerException
 	{ // method body
-		// todo
-		throw new NoSuchMethodError();
+		final Node<E> a = root;
+		final Node<E> b = a.leftChild;
+		final Node<E> c = b.rightChild;
+		a.leftChild = c.rightChild;
+		b.rightChild = c.leftChild;
+		c.rightChild = a;
+		c.leftChild = b;
+		a.subtreeHeight = subtreeHeight(a.rightChild) + 1;
+		b.subtreeHeight = a.subtreeHeight;
+		c.subtreeHeight = a.subtreeHeight + 1;
+		return c;
 	} // zagZig()
 
 	// todo
