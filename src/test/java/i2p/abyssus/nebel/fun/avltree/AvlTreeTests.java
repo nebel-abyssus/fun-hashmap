@@ -13,59 +13,59 @@ public class AvlTreeTests {
 
 // instance fields
 
-	private Function<Integer, Integer> keyExtractor;
+	private Function<Long, Integer> keyExtractor;
 	private Comparator<Integer> keyComparator;
 	private RandomGenerator rng;
 
 	/**
 	 * Всегда пустое дерево.
 	 */
-	private AvlTree<Integer, Integer> emptyTree;
+	private AvlTree<Long, Integer> emptyTree;
 
 	/**
 	 * Изначально пустое дерево, заполняемое в тестовых методах.
 	 */
-	private AvlTree<Integer, Integer> tree;
+	private AvlTree<Long, Integer> tree;
 
 	/**
 	 * Заполненное дерево. Содержит нечётные натуральные числа меньшие 10.
 	 */
-	private AvlTree<Integer, Integer> filledTree;
+	private AvlTree<Long, Integer> filledTree;
 
 // instance methods
 
 	@BeforeEach
 	public void testInit (
 	) { // method body
-		keyExtractor = Function.<Integer>identity();
+		keyExtractor = Long::intValue;
 		keyComparator = Comparator.<Integer>naturalOrder();
 		rng = ThreadLocalRandom.current();
-		emptyTree = new AvlTree<Integer, Integer>(keyExtractor, keyComparator);
-		tree = new AvlTree<Integer, Integer>(keyExtractor, keyComparator);
-		filledTree = new AvlTree<Integer, Integer>(keyExtractor, keyComparator);
-		filledTree.put(1);
-		filledTree.put(3);
-		filledTree.put(5);
-		filledTree.put(7);
-		filledTree.put(9);
+		emptyTree = new AvlTree<Long, Integer>(keyExtractor, keyComparator);
+		tree = new AvlTree<Long, Integer>(keyExtractor, keyComparator);
+		filledTree = new AvlTree<Long, Integer>(keyExtractor, keyComparator);
+		filledTree.put(1L);
+		filledTree.put(3L);
+		filledTree.put(5L);
+		filledTree.put(7L);
+		filledTree.put(9L);
 	} // testInit()
 
 	@Test
 	public void constructor_nullKeyExtractor_throwsNPE (
 	) { // method body
-		Assertions.assertThrows(NullPointerException.class, () -> new AvlTree<Integer, Integer>(null, keyComparator));
+		Assertions.assertThrows(NullPointerException.class, () -> new AvlTree<Long, Integer>(null, keyComparator));
 	} // constructor_nullKeyExtractor_throwsNPE()
 
 	@Test
 	public void constructor_nullKeyComparator_throwsNPE (
 	) { // method body
-		Assertions.assertThrows(NullPointerException.class, () -> new AvlTree<Integer, Integer>(keyExtractor, null));
+		Assertions.assertThrows(NullPointerException.class, () -> new AvlTree<Long, Integer>(keyExtractor, null));
 	} // constructor_nullKeyComparator_throwsNPE()
 
 	@Test
 	public void constructor_validArguments_notThrows (
 	) { // method body
-		Assertions.assertDoesNotThrow(() -> new AvlTree<Integer, Integer>(keyExtractor, keyComparator));
+		Assertions.assertDoesNotThrow(() -> new AvlTree<Long, Integer>(keyExtractor, keyComparator));
 	} // constructor_validArguments_notThrows()
 
 	/**
@@ -77,7 +77,7 @@ public class AvlTreeTests {
 		// arrange
 		final Integer key = rng.nextInt();
 		// act
-		final Integer foundItem = emptyTree.findItemByKey(key);
+		final Long foundItem = emptyTree.findItemByKey(key);
 		// assert
 		Assertions.assertNull(foundItem, "In the empty tree was found an item");
 	} // findItemByKey_emptyTree_nothingFound()
@@ -89,13 +89,13 @@ public class AvlTreeTests {
 	public void findItemByKey_treeContains13579_found7 (
 	) { // method body
 		// arrange
-		final Integer seven = 7;
+		final Long seven = 7L;
 		final Integer key = keyExtractor.apply(seven);
 		// act
-		final Integer foundItem = filledTree.findItemByKey(key);
+		final Long foundItem = filledTree.findItemByKey(key);
 		// assert
 		Assertions.assertNotNull(foundItem, "In the tree containing 7, 7 was not found");
-		Assertions.assertEquals(seven, foundItem, "In the tree containing 7, for key of 7, was found not 7");
+		Assertions.assertSame(seven, foundItem, "In the tree containing 7, for key of 7, was found not 7");
 	} // findItemByKey_treeContains357_found7()
 
 	/**
@@ -105,10 +105,10 @@ public class AvlTreeTests {
 	public void findItemByKey_treeContains13579_notFound2 (
 	) { // method body
 		// arrange
-		final Integer two = 2;
+		final Long two = 2L;
 		final Integer key = keyExtractor.apply(two);
 		// act
-		final Integer foundItem = filledTree.findItemByKey(key);
+		final Long foundItem = filledTree.findItemByKey(key);
 		// assert
 		Assertions.assertNull(foundItem, "In the tree not containing 2, an item with key of 2 was found");
 	} // findItemByKey_treeContains13579_notFound2()
@@ -120,9 +120,9 @@ public class AvlTreeTests {
 	public void findItem_emptyTree_nothingFound (
 	) { // method body
 		// arrange
-		final Integer item = rng.nextInt();
+		final Long item = rng.nextLong();
 		// act
-		final Integer foundItem = emptyTree.findItem(item);
+		final Long foundItem = emptyTree.findItem(item);
 		// assert
 		Assertions.assertNull(foundItem, "In the empty tree was found an item");
 	} // findItem_emptyTree_nothingFound()
@@ -134,12 +134,12 @@ public class AvlTreeTests {
 	public void findItem_treeContains13579_found7 (
 	) { // method body
 		// arrange
-		final Integer seven = 7;
+		final Long seven = 7L;
 		// act
-		final Integer foundItem = filledTree.findItem(seven);
+		final Long foundItem = filledTree.findItem(seven);
 		// assert
 		Assertions.assertNotNull(foundItem, "In the tree containing 7, 7 was not found");
-		Assertions.assertEquals(seven, foundItem, "In the tree containing 7, for search request of 7, was found not 7");
+		Assertions.assertSame(seven, foundItem, "In the tree containing 7, for search request of 7, was found not 7");
 	} // findItem_treeContains357_found7()
 
 	/**
@@ -149,9 +149,9 @@ public class AvlTreeTests {
 	public void findItem_treeContains13579_notFound2 (
 	) { // method body
 		// arrange
-		final Integer two = 2;
+		final Long two = 2L;
 		// act
-		final Integer foundItem = filledTree.findItem(two);
+		final Long foundItem = filledTree.findItem(two);
 		// assert
 		Assertions.assertNull(foundItem, "In the tree not containing 2, 2 was found");
 	} // findItem_treeContains13579_notFound2()
@@ -163,10 +163,10 @@ public class AvlTreeTests {
 	public void put_treeContains1_put2_returnNull (
 	) { // method body
 		// arrange
-		tree.put(1);
-		final Integer item = 2;
+		tree.put(1L);
+		final Long item = 2L;
 		// act
-		final Integer replacedItem = tree.put(item);
+		final Long replacedItem = tree.put(item);
 		// assert
 		Assertions.assertNull(replacedItem, "In tree not containing 2, item 2 replace an item");
 	} // put_treeContains1_put2_returnNull()
@@ -178,11 +178,11 @@ public class AvlTreeTests {
 	public void put_treeContains1_put1_replace1 (
 	) { // method body
 		// arrange
-		final Integer someItem = rng.nextInt();
-		final Integer newItem = Integer.valueOf(someItem);
+		final Long someItem = rng.nextLong();
+		final Long newItem = Long.valueOf(someItem);
 		tree.put(someItem);
 		// act
-		final Integer replacedItem = tree.put(newItem);
+		final Long replacedItem = tree.put(newItem);
 		// assert
 		Assertions.assertSame(someItem, replacedItem, "Placed item replace an item with different key");
 	} // put_treeContains1_put1_replace1()
