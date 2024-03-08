@@ -16,7 +16,21 @@ public class AvlTreeTests {
 	private Function<Integer, Integer> keyExtractor;
 	private Comparator<Integer> keyComparator;
 	private RandomGenerator rng;
+
+	/**
+	 * Всегда пустое дерево.
+	 */
+	private AvlTree<Integer, Integer> emptyTree;
+
+	/**
+	 * Изначально пустое дерево, заполняемое в тестовых методах.
+	 */
 	private AvlTree<Integer, Integer> tree;
+
+	/**
+	 * Заполненное дерево. Содержит нечётные натуральные числа меньшие 10.
+	 */
+	private AvlTree<Integer, Integer> filledTree;
 
 // instance methods
 
@@ -26,7 +40,14 @@ public class AvlTreeTests {
 		keyExtractor = Function.<Integer>identity();
 		keyComparator = Comparator.<Integer>naturalOrder();
 		rng = ThreadLocalRandom.current();
+		emptyTree = new AvlTree<Integer, Integer>(keyExtractor, keyComparator);
 		tree = new AvlTree<Integer, Integer>(keyExtractor, keyComparator);
+		filledTree = new AvlTree<Integer, Integer>(keyExtractor, keyComparator);
+		filledTree.put(1);
+		filledTree.put(3);
+		filledTree.put(5);
+		filledTree.put(7);
+		filledTree.put(9);
 	} // testInit()
 
 	@Test
@@ -56,7 +77,7 @@ public class AvlTreeTests {
 		// arrange
 		final Integer key = rng.nextInt();
 		// act
-		final Integer foundItem = tree.findItemByKey(key);
+		final Integer foundItem = emptyTree.findItemByKey(key);
 		// assert
 		Assertions.assertNull(foundItem, "In the empty tree was found an item");
 	} // findItemByKey_emptyTree_nothingFound()
@@ -68,15 +89,10 @@ public class AvlTreeTests {
 	public void findItemByKey_treeContains13579_found7 (
 	) { // method body
 		// arrange
-		tree.put(1);
-		tree.put(3);
-		tree.put(5);
-		tree.put(7);
-		tree.put(9);
 		final Integer seven = 7;
 		final Integer key = keyExtractor.apply(seven);
 		// act
-		final Integer foundItem = tree.findItemByKey(key);
+		final Integer foundItem = filledTree.findItemByKey(key);
 		// assert
 		Assertions.assertNotNull(foundItem, "In the tree containing 7, 7 was not found");
 		Assertions.assertEquals(seven, foundItem, "In the tree containing 7, for key of 7, was found not 7");
@@ -89,15 +105,10 @@ public class AvlTreeTests {
 	public void findItemByKey_treeContains13579_notFound2 (
 	) { // method body
 		// arrange
-		tree.put(1);
-		tree.put(3);
-		tree.put(5);
-		tree.put(7);
-		tree.put(9);
 		final Integer two = 2;
 		final Integer key = keyExtractor.apply(two);
 		// act
-		final Integer foundItem = tree.findItemByKey(key);
+		final Integer foundItem = filledTree.findItemByKey(key);
 		// assert
 		Assertions.assertNull(foundItem, "In the tree not containing 2, an item with key of 2 was found");
 	} // findItemByKey_treeContains13579_notFound2()
@@ -111,7 +122,7 @@ public class AvlTreeTests {
 		// arrange
 		final Integer item = rng.nextInt();
 		// act
-		final Integer foundItem = tree.findItem(item);
+		final Integer foundItem = emptyTree.findItem(item);
 		// assert
 		Assertions.assertNull(foundItem, "In the empty tree was found an item");
 	} // findItem_emptyTree_nothingFound()
@@ -123,14 +134,9 @@ public class AvlTreeTests {
 	public void findItem_treeContains13579_found7 (
 	) { // method body
 		// arrange
-		tree.put(1);
-		tree.put(3);
-		tree.put(5);
-		tree.put(7);
-		tree.put(9);
 		final Integer seven = 7;
 		// act
-		final Integer foundItem = tree.findItem(seven);
+		final Integer foundItem = filledTree.findItem(seven);
 		// assert
 		Assertions.assertNotNull(foundItem, "In the tree containing 7, 7 was not found");
 		Assertions.assertEquals(seven, foundItem, "In the tree containing 7, for search request of 7, was found not 7");
@@ -143,14 +149,9 @@ public class AvlTreeTests {
 	public void findItem_treeContains13579_notFound2 (
 	) { // method body
 		// arrange
-		tree.put(1);
-		tree.put(3);
-		tree.put(5);
-		tree.put(7);
-		tree.put(9);
 		final Integer two = 2;
 		// act
-		final Integer foundItem = tree.findItem(two);
+		final Integer foundItem = filledTree.findItem(two);
 		// assert
 		Assertions.assertNull(foundItem, "In the tree not containing 2, 2 was found");
 	} // findItem_treeContains13579_notFound2()
