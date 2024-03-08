@@ -187,5 +187,73 @@ public class AvlTreeTests {
 		Assertions.assertSame(someItem, replacedItem, "Placed item replace an item with different key");
 	} // put_treeContains1_put1_replace1()
 
+	/**
+	 * Высота пустого дерева должна равняться нулю.
+	 */
+	@Test
+	public void height_emptyTree_returnZero (
+	) { // method body
+		Assertions.assertEquals(0, emptyTree.height(), "The height of an empty tree is non-zero");
+	} // height_emptyTree_returnZero()
+
+	/**
+	 * Высота АВЛ-дерева содержащего пять элементов должна равняться 3.
+	 */
+	@Test
+	public void height_treeContains13579_return3 (
+	) { // method body
+		Assertions.assertEquals(3, filledTree.height(), "The height of the avl-tree containing 5 items is different from 3");
+	} // height_treeContains13579_return3()
+
+	/**
+	 * Высота АВЛ-дерева содержащего 1 элемент должна равняться 1.
+	 */
+	@Test
+	public void height_treeOfOneItem_return1 (
+	) { // method body
+		// arrange
+		final Long item = rng.nextLong();
+		tree.put(item);
+		// act
+		final int height = tree.height();
+		// assert
+		Assertions.assertEquals(1, height, "The height of an avl-tree containing 1 item is different from 1");
+	} // height_treeOfOneItem_return1()
+
+	/**
+	 * Высота АВЛ-дерева содержащего 2 элемента должна равняться 2.
+	 */
+	@Test
+	public void height_treeOfTwoItems_return2 (
+	) { // method body
+		// arrange
+		final Long firstItem = rng.nextLong();
+		final Long secondItem = rng.nextLong();
+		tree.put(firstItem);
+		tree.put(secondItem);
+		// act
+		final int height = tree.height();
+		// assert
+		Assertions.assertEquals(2, height, "The height of an avl-tree containing 2 items is different from 2");
+	} // height_treeOfTwoItems_return2()
+
+	@Test
+	public void height_treeOfNItems_heightBelowMaximum (
+	) { // method body
+		// arrange
+		final int MIN_N = 128;
+		final int MAX_N = 2048;
+		final int n = rng.nextInt(MIN_N, MAX_N + 1);
+		final double maxHeight = (1.45 / Math.log(2)) * Math.log(n + 2);
+		for (int i = n; i > 0; i--) {
+			final Long item = rng.nextLong();
+			tree.put(item);
+		} // for
+		// act
+		final int height = tree.height();
+		// assert
+		Assertions.assertTrue(height <= maxHeight, "The tree height exceeds the maximum possible height");
+	} // height_treeOfNItems_heightBelowMaximum()
+
 	// todo
 } // AvlTreeTests
