@@ -3,6 +3,7 @@ package i2p.abyssus.nebel.fun.avltree;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.Comparator;
 import java.util.concurrent.ThreadLocalRandom;
@@ -237,6 +238,9 @@ public class AvlTreeTests {
 		Assertions.assertEquals(2, height, "The height of an avl-tree containing 2 items is different from 2");
 	} // height_treeOfTwoItems_return2()
 
+	/**
+	 * Высота АВЛ-дерева не должна превышать максимально возможную.
+	 */
 	@Test
 	public void height_treeOfNItems_heightBelowMaximum (
 	) { // method body
@@ -254,6 +258,22 @@ public class AvlTreeTests {
 		// assert
 		Assertions.assertTrue(height <= maxHeight, "The tree height exceeds the maximum possible height");
 	} // height_treeOfNItems_heightBelowMaximum()
+
+	/**
+	 * Должен быть возвращён экстрактор ключей указанный при создании дерева.
+	 */
+	@Test
+	@SuppressWarnings("unchecked")
+	public void keyExtractor_treeUsingSpecifiedKE_returnSameKE (
+	) { // method body
+		// arrange
+		final Function<Long, Integer> expectedKE = (Function<Long, Integer>) Mockito.<Function>mock(Function.class);
+		final AvlTree<Long, Integer> tree = new AvlTree<Long, Integer>(expectedKE, keyComparator);
+		// act
+		final Function<? super Long, ? extends Integer> actualKE = tree.keyExtractor();
+		// assert
+		Assertions.assertSame(expectedKE, actualKE, "Tree returns unspecified key extractor");
+	} // keyExtractor_returnSpecifiedKE()
 
 	// todo
 } // AvlTreeTests
