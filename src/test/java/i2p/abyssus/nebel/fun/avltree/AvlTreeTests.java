@@ -275,5 +275,21 @@ public class AvlTreeTests {
 		Assertions.assertSame(expectedKE, actualKE, "Tree returns unspecified key extractor");
 	} // keyExtractor_returnSpecifiedKE()
 
+	/**
+	 * Должен быть возвращён компаратор ключей указанный при создании дерева.
+	 */
+	@Test
+	@SuppressWarnings("unchecked")
+	public void keyComparator_treeUsingSpecifiedKC_returnSameKC (
+	) { // method body
+		// arrange
+		final Comparator<Integer> expectedKC = (Comparator<Integer>) Mockito.<Comparator>mock(Comparator.class);
+		final AvlTree<Long, Integer> tree = new AvlTree<Long, Integer>(keyExtractor, expectedKC);
+		// act
+		final Comparator<? super Integer> actualKC = tree.keyComparator();
+		// assert
+		Assertions.assertSame(expectedKC, actualKC, "Tree returns unspecified key extractor");
+	} // keyComparator_treeUsingSpecifiedKC_returnSameKC()
+
 	// todo
 } // AvlTreeTests
