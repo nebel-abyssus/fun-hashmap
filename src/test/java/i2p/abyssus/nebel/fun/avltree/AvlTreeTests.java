@@ -291,5 +291,38 @@ public class AvlTreeTests {
 		Assertions.assertSame(expectedKC, actualKC, "Tree returns unspecified key extractor");
 	} // keyComparator_treeUsingSpecifiedKC_returnSameKC()
 
+	/**
+	 * Пустое дерево должно быть пустым.
+	 */
+	@Test
+	public void isEmpty_emptyTree_returnTrue (
+	) { // method body
+		Assertions.assertTrue(emptyTree.isEmpty(), "Пустое дерево - не пусто");
+	} // isEmpty_emptyTree_returnTrue()
+
+	/**
+	 * Если дерево содержит даже один элемент, оно уже не является пустым.
+	 */
+	@Test
+	public void isEmpty_oneItemTree_returnFalse (
+	) { // method body
+		// arrange
+		final Long item = rng.nextLong();
+		tree.put(item);
+		// act
+		final boolean isTreeEmpty = tree.isEmpty();
+		// assert
+		Assertions.assertFalse(isTreeEmpty, "Дерево из одного элемента - пусто");
+	} // isEmpty_oneItemTree_returnFalse()
+
+	/**
+	 * Дерево содержащее несколько элементов не должно являться пустым.
+	 */
+	@Test
+	public void isEmpty_filledTree_returnFalse (
+	) { // method body
+		Assertions.assertFalse(filledTree.isEmpty(), "Дерево содержит несколько элементов, но почему-то является пустым");
+	} // isEmpty_filledTree_returnFalse()
+
 	// todo
 } // AvlTreeTests
