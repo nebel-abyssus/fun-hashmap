@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.random.RandomGenerator;
@@ -323,6 +325,67 @@ public class AvlTreeTests {
 	) { // method body
 		Assertions.assertFalse(filledTree.isEmpty(), "Дерево содержит несколько элементов, но почему-то является пустым");
 	} // isEmpty_filledTree_returnFalse()
+
+	/**
+	 * Размер пустого дерева должен быть равен нулю.
+	 */
+	@Test
+	public void size_emptyTree_returnZero (
+	) { // method body
+		Assertions.assertEquals(0, emptyTree.size(), "Размер пустого дерева не нуль");
+	} // size_emptyTree_returnZero()
+
+	/**
+	 * Размер дерева из одного элемента должен быть равен единице.
+	 */
+	@Test
+	public void size_oneItemTree_returnOne (
+	) { // method body
+		// arrange
+		final Long item = rng.nextLong();
+		tree.put(item);
+		// act
+		final long actualSize = tree.size();
+		// assert
+		Assertions.assertEquals(1, actualSize, "Размер дерева из одного элемента не равен единице");
+	} // size_oneItemTree_returnOne()
+
+	/**
+	 * Дерево состоящее из <em>n</em> элементов. Должно быть возвращено их настоящее количество.
+	 */
+	@Test
+	public void size_nItemsTree_returnN (
+	) { // method body
+		// arrange
+		final int MIN_N = 128;
+		final int MAX_N = 2048;
+		final int n = rng.nextInt(MIN_N, MAX_N + 1);
+		final Set<Long> items = new HashSet<Long>(n);
+		do {
+			final Long item = rng.nextLong();
+			items.add(item);
+			tree.put(item);
+		} while (items.size() != n);
+		// act
+		final long actualSize = tree.size();
+		// assert
+		Assertions.assertEquals(n, actualSize, "Размер дерева из n различных элементов, не равен n");
+	} // size_nItemsTree_returnN()
+
+	/**
+	 * Добавление уже присутствующего элемента. Размер дерева не должен измениться.
+	 */
+	@Test
+	public void size_filledTree_putAlreadyPresentItem_sameSize (
+	) { // method body
+		// arrange
+		final long oldSize = filledTree.size();
+		filledTree.put(3L);
+		// act
+		final long newSize = filledTree.size();
+		// assert
+		Assertions.assertEquals(oldSize, newSize, "Размер дерева изменился при добавлении уже присутствующего элемента");
+	} // size_filledTree_putAlreadyPresentItem_sameSize()
 
 	// todo
 } // AvlTreeTests
