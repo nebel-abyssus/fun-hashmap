@@ -88,6 +88,20 @@ public class AvlTree <E, K> {
 			this.subtreeHeight = 1;
 		} // Node()
 
+		/**
+		 * Очистка узла.
+		 * <p>Метод очищает узел, подготавливая его к передачи сборщику мусора, или повторному использованию.</p>
+		 */
+		private void clear (
+		) { // method body
+			item = null;
+			leftChild = null;
+			rightChild = null;
+			previousNode = null;
+			nextNode = null;
+			subtreeHeight = 1;
+		} // clear()
+
 	} // Node
 
 // static methods
