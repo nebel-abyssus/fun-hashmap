@@ -387,5 +387,72 @@ public class AvlTreeTests {
 		Assertions.assertEquals(oldSize, newSize, "Размер дерева изменился при добавлении уже присутствующего элемента");
 	} // size_filledTree_putAlreadyPresentItem_sameSize()
 
+	/**
+	 * Метод должен возвратить субъект метода.
+	 */
+	@Test
+	public void clear_someTree_returnSameTree (
+	) { // method body
+		// arrange
+		final AvlTree<Long, Integer> someTree = new AvlTree<Long, Integer>(keyExtractor, keyComparator);
+		// act
+		final AvlTree<Long, Integer> returnedTree = someTree.clear();
+		// assert
+		Assertions.assertSame(someTree, returnedTree, "Метод очистки возвратил не то дерево, у которого был вызван");
+	} // clear_someTree_returnSameTree()
+
+	/**
+	 * Пустое дерево, после очистки, должно остаться пустым.
+	 */
+	@Test
+	public void clear_emptyTree_treeIsEmpty (
+	) { // method body
+		Assertions.assertTrue(emptyTree.clear().isEmpty(), "Пустое дерево перестало быть пустым после очистки");
+	} // clear_emptyTree_treeIsEmpty()
+
+	/**
+	 * Очистка дерева из одного элемента.
+	 */
+	@Test
+	public void clear_oneItemTree_treeIsEmpty (
+	) { // method body
+		// arrange
+		final Long item = rng.nextLong();
+		tree.put(item);
+		// act
+		tree.clear();
+		// assert
+		Assertions.assertTrue(tree.isEmpty(), "Дерево из одного элемента не стало пустым после очистки");
+	} // clear_oneItemTree_treeIsEmpty()
+
+	/**
+	 * Очистка дерева из случайного числа элементов.
+	 */
+	@Test
+	public void clear_nItemsTree_treeIsEmpty (
+	) { // method body
+		// arrange
+		final int MIN_N = 128;
+		final int MAX_N = 2048;
+		final int n = rng.nextInt(MIN_N, MAX_N + 1);
+		for (int i = n; i > 0; i--) {
+			final Long item = rng.nextLong();
+			tree.put(item);
+		} // for
+		// act
+		tree.clear();
+		// assert
+		Assertions.assertTrue(tree.isEmpty(), "Дерево из случайного числа элементов не стало пустым после очистки");
+	} // clear_nItemsTree_treeIsEmpty()
+
+	/**
+	 * Размер очищенного дерева должен быть равен нулю.
+	 */
+	@Test
+	public void clear_filledTree_zeroSize (
+	) { // method body
+		Assertions.assertEquals(0, filledTree.clear().size(), "Размер дерева после очистки не равен нулю");
+	} // clear_filledTree_zeroSize()
+
 	// todo
 } // AvlTreeTests
