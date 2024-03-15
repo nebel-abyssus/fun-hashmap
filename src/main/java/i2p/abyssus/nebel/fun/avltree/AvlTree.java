@@ -133,6 +133,25 @@ public class AvlTree <E, K> {
 		return root.subtreeHeight;
 	} // heightCorrection()
 
+	/**
+	 * Поиск самого левого узла в указанном поддереве.
+	 * <p>Метод ищет и возвращает самый левый узел поддерева, заданного указанным корнем.</p>
+	 * @param <E> Тип элементов поддерева.
+	 * @param root Корень поддерева.
+	 * @return Самый левый узел поддерева.
+	 * @throws NullPointerException Если указанный корень не существует.
+	 */
+	private static <E> Node<E> findLeftmostNode (
+		final Node<E> root
+	) throws NullPointerException
+	{ // method body
+		Node<E> leftmostNode = root;
+		while (leftmostNode.leftChild != null) {
+			leftmostNode = leftmostNode.leftChild;
+		} // while
+		return leftmostNode;
+	} // findLeftmostNode()
+
 // instance fields
 
 	/**
