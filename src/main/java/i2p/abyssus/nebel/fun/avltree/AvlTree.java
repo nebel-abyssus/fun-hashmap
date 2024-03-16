@@ -136,38 +136,48 @@ public class AvlTree <E, K> {
 	/**
 	 * Поиск самого левого узла в указанном поддереве.
 	 * <p>Метод ищет и возвращает самый левый узел поддерева, заданного указанным корнем.</p>
+	 * <p>Во время работы, метод дополняет указанный путь пройденными узлами, от указанного корня и до искомого включительно. Соответствие корня поддерева и пути никак не проверяется, и возлагается на вызывающий код.</p>
 	 * @param <E> Тип элементов поддерева.
 	 * @param root Корень поддерева.
+	 * @param path Дополняемый путь.
 	 * @return Самый левый узел поддерева.
-	 * @throws NullPointerException Если указанный корень не существует.
+	 * @throws NullPointerException Если любой из аргументов не существует.
 	 */
 	private static <E> Node<E> findLeftmostNode (
-		final Node<E> root
+		final Node<E> root,
+		final Deque<Node<E>> path
 	) throws NullPointerException
 	{ // method body
 		Node<E> leftmostNode = root;
 		while (leftmostNode.leftChild != null) {
+			path.push(leftmostNode);
 			leftmostNode = leftmostNode.leftChild;
 		} // while
+		path.push(leftmostNode);
 		return leftmostNode;
 	} // findLeftmostNode()
 
 	/**
 	 * Поиск самого правого узла в указанном поддереве.
 	 * <p>Метод ищет и возвращает самый правый узел поддерева, заданного указанным корнем.</p>
+	 * <p>Во время работы, метод дополняет указанный путь пройденными узлами, от указанного корня и до искомого включительно. Соответствие корня поддерева и пути никак не проверяется, и возлагается на вызывающий код.</p>
 	 * @param <E> Тип элементов поддерева.
 	 * @param root Корень поддерева.
+	 * @param path Дополняемый путь.
 	 * @return Самый правый узел поддерева.
-	 * @throws NullPointerException Если указанный корень не существует.
+	 * @throws NullPointerException Если любой из аргументов не существует.
 	 */
 	private static <E> Node<E> findRightmostNode (
-		final Node<E> root
+		final Node<E> root,
+		final Deque<Node<E>> path
 	) throws NullPointerException
 	{ // method body
 		Node<E> rightmostNode = root;
 		while (rightmostNode.rightChild != null) {
+			path.push(rightmostNode);
 			rightmostNode = rightmostNode.rightChild;
 		} // while
+		path.push(rightmostNode);
 		return rightmostNode;
 	} // findRightmostNode()
 
