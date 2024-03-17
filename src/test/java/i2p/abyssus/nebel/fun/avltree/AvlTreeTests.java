@@ -5,9 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.random.RandomGenerator;
@@ -453,6 +451,155 @@ public class AvlTreeTests {
 	) { // method body
 		Assertions.assertEquals(0, filledTree.clear().size(), "Размер дерева после очистки не равен нулю");
 	} // clear_filledTree_zeroSize()
+
+	/**
+	 * Попытка удаления случайного элемента из пустого дерева. Должно быть возвращено значение {@code null}.
+	 */
+	@Test
+	public void remove_emptyTree_returnNull (
+	) { // method body
+		// arrange
+		final Long item = rng.nextLong();
+		final Integer key = keyExtractor.apply(item);
+		// act
+		final Long removedItem = emptyTree.remove(key);
+		// assert
+		Assertions.assertNull(removedItem, "Из пустого дерева успешно удалён случайный элемент");
+	} // remove_emptyTree_returnNull()
+
+	/**
+	 * Дерево из одного элемента. Удаление этого элемента из дерева. Дерево должно стать пустым.
+	 */
+	@Test
+	public void remove_oneItemTree_treeIsEmpty (
+	) { // method body
+		// arrange
+		final Long item = rng.nextLong();
+		tree.put(item);
+		final Integer key = keyExtractor.apply(item);
+		// act
+		tree.remove(key);
+		// assert
+		Assertions.assertTrue(tree.isEmpty(), "Дерево из одного элемента не стало пустым, после удаления этого элемента");
+	} // remove_oneItemTree_treeIsEmpty()
+
+	/**
+	 * Дерево содержит элементы 1, 3, 5, 7, 9. Попытка удаления элемента 2. Размер дерева не должен измениться.
+	 */
+	@Test
+	public void remove_removingNonExistentItem_treeSizeNotChanged (
+	) { // method body
+		// arrange
+		final Long item = 2L;
+		final Integer key = keyExtractor.apply(item);
+		final long oldSize = filledTree.size();
+		// act
+		filledTree.remove(key);
+		// assert
+		Assertions.assertEquals(oldSize, filledTree.size(), "Удаление не существующего элемента изменило размер дерева");
+	} // remove_removingNonExistentItem_treeSizeNotChanged()
+
+	/**
+	 * Удалённый элемент не должен быть найден.
+	 */
+	@Test
+	public void remove_removedItemMustNotBeFound (
+	) { // method body
+		// arrange
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		// act
+		final Long removedItem = filledTree.remove(key);
+		// assert
+		Assertions.assertNull(filledTree.findItem(removedItem), "Удалённый из дерева элемент найден в дереве");
+	} // remove_removedItemMustNotBeFound()
+
+	/**
+	 * Повторная попытка удаления уже удалённого элемента, должна возвращать {@code null}.
+	 */
+	@Test
+	public void remove_repeatedRemoving_returnNull (
+	) { // method body
+		// arrange
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		// act
+		filledTree.remove(key);
+		final Long repeatedRemoveResult = filledTree.remove(key);
+		// assert
+		Assertions.assertNull(repeatedRemoveResult, "Повторное удаление уже удалённого элемента было успешным");
+	} // remove_repeatedRemoving_returnNull()
+
+	/**
+	 * Проверка того, что возвращается именно удаляемый объект.
+	 */
+	@Test
+	public void remove_randomTree_returnRemovedObject (
+	) { // method body
+		// arrange
+		final long start = 1_000_000_000;
+		final int count = 128;
+		final Long[] items = new Long[count];
+		for (int i = 0; i < count; i++) {
+			final Long item = start + i;
+			items[i] = item;
+			tree.put(item);
+		} // for
+		final int idx = rng.nextInt(count);
+		final Long targetItem = items[idx];
+		final Integer key = keyExtractor.apply(targetItem);
+		// act
+		final Long removedItem = tree.remove(key);
+		// assert
+		Assertions.assertSame(targetItem, removedItem, "Удалённый объект отличается от того, что должен был быть удалён");
+	} // remove_randomTree_returnRemovedObject()
+
+	/**
+	 * Удаление <em>m</em> из <em>n</em> элементов. Размер дерева должен уменьшиться на m.
+	 */
+	/*
+	 * Примечания к реализации:
+	 *
+	 * Ключи объектов могут совпадать. Поэтому, использованы следующие переменные:
+	 * nn - общее число добавляемых элементов. Ключи этих элементов могут совпадать.
+	 * n - число элементов с уникальными ключами. Определяет размер дерева до удаления элементов.
+	 * mm - число операций удаления. Не всегда удаляемые объекты уникальны. Может быть совершено несколько попыток удаления одного и того же элемента.
+	 * m - число удалённых уникальных элементов. Определяет дельту на которою должен уменьшиться размер дерева.
+	 * Таким образом, отношения между переменными следующие:
+	 * m <= mm <= n <= nn;
+	 */
+	@Test
+	public void remove_randomTree_removingMOfNItems_sizeDecreasedByM (
+	) { // method body
+		// arrange
+		final int MIN_N = 128;
+		final int MAX_N = 2048;
+		final int nn = rng.nextInt(MIN_N, MAX_N + 1);
+		final Map<Integer, Long> itemMap = new HashMap<Integer, Long>(nn);
+		for (int i = nn; i > 0; i--) {
+			final Long item = rng.nextLong();
+			final Integer key = keyExtractor.apply(item);
+			itemMap.put(key, item);
+			tree.put(item);
+		} // for
+		final int n = itemMap.size();
+		final List<Long> items = new ArrayList<Long>(itemMap.values());
+		// act
+		final int mm = rng.nextInt(n + 1);
+		final BitSet removeFlags = new BitSet(n);
+		for (int i = mm; i > 0; i--) {
+			final int idx = rng.nextInt(n);
+			final Long item = items.get(idx);
+			final Integer key = keyExtractor.apply(item);
+			tree.remove(key);
+			removeFlags.set(idx);
+		} // for
+		final int m = removeFlags.cardinality();
+		final int expectedSize = n - m;
+		final long actualSize = tree.size();
+		// assert
+		Assertions.assertEquals(expectedSize, actualSize, "Размер дерева отличается от разности количеств добавленных и удалённых уникальных элементов");
+	} // remove_randomTree_removingMOfNItems_sizeDecreasedByM()
 
 	// todo
 } // AvlTreeTests
