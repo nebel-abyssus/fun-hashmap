@@ -396,6 +396,37 @@ public class AvlTree <E, K> {
 	} // clear()
 
 	/**
+	 * Удаление элемента.
+	 * <p>Метод удаляет из дерева элемент с указанным ключом. Возвращает удалённый элемент. Если элемент с указанным ключом отсутствует, то дерево остаётся неизменным, а метод возвращает значение {@code null}.</p>
+	 * @param key Ключ удаляемого элемента.
+	 * @return Удалённый элемент, или значение {@code null}.
+	 */
+	public E remove (
+		final K key
+	) { // method body
+		final Deque<Node<E>> path = findPathByKey(key);
+		Node<E> target = path.peek();
+		E removedItem = null;
+		if ((target != null) && (keyComparator.compare(keyExtractor.apply(target.item), key) == 0)) {
+			removedItem = target.item;
+			while ((target.leftChild != null) || (target.rightChild != null)) {
+				final Node<E> newTarget = (subtreeHeight(target.leftChild) >= subtreeHeight(target.rightChild))
+					? findRightmostNode(target.leftChild, path)
+					: findLeftmostNode(target.rightChild, path);
+				target.item = newTarget.item;
+				target = newTarget;
+			} // while
+			removeNode(path);
+			rebalancing(path);
+			lastFoundPath = null;
+			lastSearchedKey = null;
+			size--;
+			version++;
+		} // if
+		return removedItem;
+	} // remove()
+
+	/**
 	 * Поиск пути к узлу.
 	 * <p>Метод находит и возвращает путь к узлу ключ элемента которого, равен указанному. Отношения ключей определяются компаратором.</p>
 	 * <p>Путь укладывается на стек начиная с корня дерева, и заканчивая самим искомым узлом, либо его возможным родителем, если узла с указанным ключом не существует.</p>
@@ -668,6 +699,13 @@ public class AvlTree <E, K> {
 		c.subtreeHeight = a.subtreeHeight + 1;
 		return c;
 	} // zagZig()
+
+	private void removeNode (
+		final Deque<Node<E>> path
+	) { // method body
+		// todo
+		throw new NoSuchMethodError();
+	} // removeNode()
 
 	// todo
 } // AvlTree
