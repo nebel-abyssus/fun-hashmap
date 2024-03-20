@@ -209,7 +209,7 @@ public class AvlTree <E, K> {
 	 * Версия дерева.
 	 * <p>Необходима для правильной работы итераторов. Увеличивается при каждой модификации.</p>
 	 */
-	private long version;
+	private long treeVersion;
 
 	/**
 	 * Размер дерева.
@@ -312,7 +312,7 @@ public class AvlTree <E, K> {
 			lastFoundPath = null;
 			lastSearchedKey = null;
 		} // if
-		version++;
+		treeVersion++;
 		return replacedItem;
 	} // put()
 
@@ -388,7 +388,7 @@ public class AvlTree <E, K> {
 		lastFoundPath = null;
 		lastSearchedKey = null;
 		size = 0;
-		version++;
+		treeVersion++;
 		return this;
 	} // clear()
 
@@ -418,7 +418,7 @@ public class AvlTree <E, K> {
 			lastFoundPath = null;
 			lastSearchedKey = null;
 			size--;
-			version++;
+			treeVersion++;
 		} // if
 		return removedItem;
 	} // remove()
