@@ -1,9 +1,6 @@
 package i2p.abyssus.nebel.fun.avltree;
 
-import java.util.ArrayDeque;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -700,11 +697,35 @@ public class AvlTree <E, K> {
 		return c;
 	} // zagZig()
 
+	/**
+	 * Удаление узла.
+	 * <p>Метод удаляет из дерева и очищает листовой узел, находящийся на вершине указанного пути. Кроме того, удаляемый узел снимается с вершины пути.</p>
+	 * @param path Путь к удаляемому узлу.
+	 * @throws NoSuchElementException Если указанный путь пуст.
+	 * @throws NullPointerException Если на вершине пути находится значение {@code null}.
+	 * @throws AssertionError Если разрешены операторы контроля, а узел находящийся на вершине пути не является листом.
+	 */
 	private void removeNode (
 		final Deque<Node<E>> path
-	) { // method body
-		// todo
-		throw new NoSuchMethodError();
+	) throws NoSuchElementException,
+		NullPointerException,
+		AssertionError
+	{ // method body
+		final Node<E> target = path.pop();
+		assert target.leftChild == null;
+		assert target.rightChild == null;
+		replaceNode(path.peek(), target, null);
+		if (target.previousNode != null) {
+			target.previousNode.nextNode = target.nextNode;
+		} else {
+			leftmostNode = target.nextNode;
+		} // if
+		if (target.nextNode != null) {
+			target.nextNode.previousNode = target.previousNode;
+		} else {
+			rightmostNode = target.previousNode;
+		} // if
+		target.clear();
 	} // removeNode()
 
 	// todo
