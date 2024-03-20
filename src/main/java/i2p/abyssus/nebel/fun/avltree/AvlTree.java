@@ -215,7 +215,7 @@ public class AvlTree <E, K> {
 	 * Размер дерева.
 	 * <p>Поле содержит число узлов в дереве.</p>
 	 */
-	private long size;
+	private long treeSize;
 
 	/**
 	 * Последний найденный путь.
@@ -297,7 +297,7 @@ public class AvlTree <E, K> {
 			if (keyComparator.compare(keyExtractor.apply(item), keyExtractor.apply(targetNode.item)) != 0) {
 				linkChildNode(targetNode, item);
 				rebalancing(path);
-				size++;
+				treeSize++;
 				lastFoundPath = null;
 				lastSearchedKey = null;
 			} else {
@@ -308,7 +308,7 @@ public class AvlTree <E, K> {
 			rootNode = new Node<E>(item, null, null);
 			leftmostNode = rootNode;
 			rightmostNode = rootNode;
-			size++;
+			treeSize++;
 			lastFoundPath = null;
 			lastSearchedKey = null;
 		} // if
@@ -365,7 +365,7 @@ public class AvlTree <E, K> {
 	 */
 	public long size (
 	) { // method body
-		return size;
+		return treeSize;
 	} // size()
 
 	/**
@@ -387,7 +387,7 @@ public class AvlTree <E, K> {
 		rightmostNode = null;
 		lastFoundPath = null;
 		lastSearchedKey = null;
-		size = 0;
+		treeSize = 0;
 		treeVersion++;
 		return this;
 	} // clear()
@@ -417,7 +417,7 @@ public class AvlTree <E, K> {
 			rebalancing(path);
 			lastFoundPath = null;
 			lastSearchedKey = null;
-			size--;
+			treeSize--;
 			treeVersion++;
 		} // if
 		return removedItem;
