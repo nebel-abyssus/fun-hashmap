@@ -107,6 +107,28 @@ public class AvlTree <E, K> {
 	 */
 	private class TreeIterator implements ListIterator<E> {
 
+	// static fields
+
+		/**
+		 * Константа, указывающая на то, что последним был возвращен узел, на который ссылается поле {@link #previousNode}. Устанавливается при прямом продвижении итератора, после обращения к методу {@link #next()}.
+		 */
+		private static final byte PREVIOUS_NODE = -1;
+
+		/**
+		 * Константа, указывающая на то, что последний возвращённый узел был удалён, с помощью обращения к методу {@link #remove()}, либо его никогда не существовало, так как не было обращений к методам {@link #previous()} и {@link #next()}.
+		 */
+		private static final byte UNDEFINED = 0;
+
+		/**
+		 * Константа, указывающая на то, что последним был возвращен узел, на который ссылается поле {@link #nextNode}. Устанавливается при обратном продвижении итератора, после обращения к методу {@link #previous()}.
+		 */
+		private static final byte NEXT_NODE = 1;
+
+	// instance fields
+
+		private Node<E> previousNode;
+		private Node<E> nextNode;
+
 	// instance methods
 
 		@Override
