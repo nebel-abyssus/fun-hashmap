@@ -101,6 +101,89 @@ public class AvlTree <E, K> {
 
 	} // Node
 
+	/**
+	 * Итератор по элементам дерева.
+	 * <p>Класс реализует интерфейс {@link ListIterator}, за тем исключением, что методы {@link #add(Object) add()}, {@link #nextIndex()}, {@link #previousIndex()} и {@link #set(Object) set()}, при обращении к ним, выбрасывают исключение {@link UnsupportedOperationException}.</p>
+	 */
+	private class TreeIterator implements ListIterator<E> {
+
+	// instance methods
+
+		@Override
+		public boolean hasNext (
+		) { // method body
+			// todo
+			throw new NoSuchMethodError();
+		} // hasNext()
+
+		@Override
+		public E next (
+		) throws NoSuchElementException
+		{ // method body
+			// todo
+			throw new NoSuchMethodError();
+		} // next()
+
+		@Override
+		public boolean hasPrevious (
+		) { // method body
+			// todo
+			throw new NoSuchMethodError();
+		} // hasPrevious()
+
+		@Override
+		public E previous (
+		) throws NoSuchElementException
+		{ // method body
+			// todo
+			throw new NoSuchMethodError();
+		} // previous()
+
+		@Override
+		public int nextIndex (
+		) throws UnsupportedOperationException
+		{ // method body
+			// todo
+			throw new NoSuchMethodError();
+		} // nextIndex()
+
+		@Override
+		public int previousIndex (
+		) throws UnsupportedOperationException
+		{ // method body
+			// todo
+			throw new NoSuchMethodError();
+		} // previousIndex()
+
+		@Override
+		public void remove (
+		) throws IllegalStateException
+		{ // method body
+			// todo
+			throw new NoSuchMethodError();
+		} // remove()
+
+		@Override
+		public void set (
+			final E item
+		) throws UnsupportedOperationException
+		{ // method body
+			// todo
+			throw new NoSuchMethodError();
+		} // set()
+
+		@Override
+		public void add (
+			final E item
+		) throws UnsupportedOperationException
+		{ // method body
+			// todo
+			throw new NoSuchMethodError();
+		} // add()
+
+		// todo
+	} // TreeIterator
+
 // static methods
 
 	/**
