@@ -601,5 +601,23 @@ public class AvlTreeTests {
 		Assertions.assertEquals(expectedSize, actualSize, "Размер дерева отличается от разности количеств добавленных и удалённых уникальных элементов");
 	} // remove_randomTree_removingMOfNItems_sizeDecreasedByM()
 
+	/**
+	 * Метод, возвращающий итератор, установленный перед первым элементом дерева, должен корректно работать на пустом дереве.
+	 */
+	@Test
+	public void preFirstIterator_emptyTree_returnNotNull (
+	) { // method body
+		Assertions.assertNotNull(emptyTree.preFirstIterator(), "Итератор перед первым элементом пустого дерева не существует");
+	} // preFirstIterator_emptyTree_returnNotNull()
+
+	/**
+	 * Метод, возвращающий итератор, установленный перед первым элементом дерева, должен корректно работать на непустом дереве.
+	 */
+	@Test
+	public void preFirstIterator_nonEmptyTree_returnNotNull (
+	) { // method body
+		Assertions.assertNotNull(filledTree.preFirstIterator(), "Итератор перед первым элементом непустого дерева не существует");
+	} // preFirstIterator_emptyTree_returnNotNull()
+
 	// todo
 } // AvlTreeTests
