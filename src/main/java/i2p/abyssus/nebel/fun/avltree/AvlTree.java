@@ -888,5 +888,18 @@ public class AvlTree <E, K> {
 		return new TreeIterator(previousNode, nextNode);
 	} // iteratorOfNext()
 
+	/**
+	 * Итератор от указанного предшествующего узла.
+	 * <p>Метод возвращает итератор, установленный после указанного узла. Если указанный узел не существует, то возвращается "пустой" итератор - то есть итератор, хоть и привязанный к текущему дереву, однако не позволяющий получить хотя бы один элемент.</p>
+	 * @param previousNode Предшествующий узел.
+	 * @return Итератор установленный после указанного узла.
+	 */
+	private TreeIterator iteratorOfPrevious (
+		final Node<E> previousNode
+	) { // method body
+		final Node<E> nextNode = (previousNode != null) ? previousNode.nextNode : null;
+		return new TreeIterator(previousNode, nextNode);
+	} // iteratorOfPrevious()
+
 	// todo
 } // AvlTree
