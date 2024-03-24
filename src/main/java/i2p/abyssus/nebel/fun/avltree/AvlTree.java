@@ -146,6 +146,31 @@ public class AvlTree <E, K> {
 		 */
 		private byte lastNodeMark;
 
+	// constructors
+
+		/**
+		 * Конструктор итератора.
+		 * <p>Создаёт экземпляр итератора, связанный с текущей версией дерева, и принимая ссылки на два последовательных, связанных между собой узла. Никаких проверок принадлежности указанных узлов к текущему дереву не производится - конструктор полагается на вызывающий код. Однако, при включенных операторах контроля, если хотя бы один из указанных узлов существует, производится проверка связности узлов между собой.</p>
+		 * @param previousNode Ссылка на предшествующий узел.
+		 * @param nextNode Ссылка на следующий узел.
+		 * @throws AssertionError Если включены операторы контроля, и выполнено любое из условий:<ul>
+		 *     <li>Предшествующий узел существует, но следующим для него является не другой указанный узел.</li>
+		 *     <li>Следующий узел существует, но предшествующим для него является не другой указанный узел.</li>
+		 * </ul>
+		 */
+		private TreeIterator (
+			final Node<E> previousNode,
+			final Node<E> nextNode
+		) throws AssertionError
+		{ // method body
+			assert (previousNode == null) || (previousNode.nextNode == nextNode);
+			assert (nextNode == null) || (nextNode.previousNode == previousNode);
+			consistentTreeVersion = treeVersion;
+			this.nextNode = nextNode;
+			this.previousNode = previousNode;
+			lastNodeMark = UNDEFINED;
+		} // TreeIterator()
+
 	// instance methods
 
 		@Override
