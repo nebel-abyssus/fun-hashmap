@@ -575,7 +575,7 @@ public class AvlTree <E, K> {
 	 * <p>Метод возвращает итератор, установленный перед первым (самым левым) элементом дерева.</p>
 	 * @return Итератор, установленный перед первым элементом дерева.
 	 */
-	public Iterator<E> preFirstIterator (
+	public ListIterator<E> preFirstIterator (
 	) { // method body
 		return iteratorOfNext(leftmostNode);
 	} // preFirstIterator()
@@ -585,7 +585,7 @@ public class AvlTree <E, K> {
 	 * <p>Метод возвращает итератор, установленный после последнего (самого правого) элемента дерева.</p>
 	 * @return Итератор, установленный после последнего элемента дерева.
 	 */
-	public Iterator<E> postLastIterator (
+	public ListIterator<E> postLastIterator (
 	) { // method body
 		return iteratorOfPrevious(rightmostNode);
 	} // postLastIterator()
