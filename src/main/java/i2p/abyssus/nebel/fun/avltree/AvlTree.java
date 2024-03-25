@@ -102,7 +102,7 @@ public class AvlTree <E, K> {
 	} // Node
 
 	/**
-	 * Итератор по элементам дерева.
+	 * Итератор элементов дерева.
 	 * <p>Класс реализует интерфейс {@link ListIterator}, за тем исключением, что методы {@link #add(Object) add()}, {@link #nextIndex()}, {@link #previousIndex()} и {@link #set(Object) set()}, при обращении к ним, выбрасывают исключение {@link UnsupportedOperationException}.</p>
 	 */
 	private class TreeIterator implements ListIterator<E> {
