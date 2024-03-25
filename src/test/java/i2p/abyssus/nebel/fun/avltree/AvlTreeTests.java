@@ -626,7 +626,7 @@ public class AvlTreeTests {
 	public void postLastIterator_emptyTree_returnNotNull (
 	) { // method body
 		Assertions.assertNotNull(emptyTree.postLastIterator(), "Итератор после последнего элемента пустого дерева не существует");
-	} // preFirstIterator_emptyTree_returnNotNull()
+	} // postLastIterator_emptyTree_returnNotNull()
 
 	/**
 	 * Метод, возвращающий итератор, установленный после последнего элемента дерева, должен корректно работать на непустом дереве.
@@ -635,7 +635,7 @@ public class AvlTreeTests {
 	public void postLastIterator_nonEmptyTree_returnNotNull (
 	) { // method body
 		Assertions.assertNotNull(filledTree.postLastIterator(), "Итератор после последнего элемента непустого дерева не существует");
-	} // preFirstIterator_emptyTree_returnNotNull()
+	} // postLastIterator_emptyTree_returnNotNull()
 
 	// todo
 } // AvlTreeTests
