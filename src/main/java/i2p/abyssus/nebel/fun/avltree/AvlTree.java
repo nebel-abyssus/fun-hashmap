@@ -12,7 +12,7 @@ import java.util.function.Function;
 /* Детали реализации:
  * Дерево представлено узлами. Узлы дополнительно образуют двусвязный список. Ключи элементов в списке узлов, упорядочены от меньших к большим.
  */
-public class AvlTree <E, K> {
+public class AvlTree <E, K> implements Iterable<E> {
 
 // nested classes
 
@@ -589,6 +589,17 @@ public class AvlTree <E, K> {
 	) { // method body
 		return iteratorOfPrevious(rightmostNode);
 	} // postLastIterator()
+
+	/**
+	 * Итератор элементов дерева.
+	 * <p>Этот метод, по сути, является псевдонимом метода {@link #preFirstIterator()}. То есть, не делает ничего, кроме обращения к упомянутому методу.</p>
+	 * @return Итератор элементов дерева.
+	 */
+	@Override
+	public ListIterator<E> iterator (
+	) { // method body
+		return preFirstIterator();
+	} // iterator()
 
 	/**
 	 * Поиск пути к узлу.
