@@ -619,5 +619,23 @@ public class AvlTreeTests {
 		Assertions.assertNotNull(filledTree.preFirstIterator(), "Итератор перед первым элементом непустого дерева не существует");
 	} // preFirstIterator_emptyTree_returnNotNull()
 
+	/**
+	 * Метод, возвращающий итератор, установленный после последнего элемента дерева, должен корректно работать на пустом дереве.
+	 */
+	@Test
+	public void postLastIterator_emptyTree_returnNotNull (
+	) { // method body
+		Assertions.assertNotNull(emptyTree.postLastIterator(), "Итератор после последнего элемента пустого дерева не существует");
+	} // preFirstIterator_emptyTree_returnNotNull()
+
+	/**
+	 * Метод, возвращающий итератор, установленный после последнего элемента дерева, должен корректно работать на непустом дереве.
+	 */
+	@Test
+	public void postLastIterator_nonEmptyTree_returnNotNull (
+	) { // method body
+		Assertions.assertNotNull(filledTree.postLastIterator(), "Итератор после последнего элемента непустого дерева не существует");
+	} // preFirstIterator_emptyTree_returnNotNull()
+
 	// todo
 } // AvlTreeTests
