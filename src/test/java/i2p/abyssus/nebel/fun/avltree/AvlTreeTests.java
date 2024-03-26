@@ -655,5 +655,68 @@ public class AvlTreeTests {
 		Assertions.assertNotNull(filledTree.iterator(), "Итератор элементов непустого дерева не существует");
 	} // iterator_nonEmptyTree_returnNotNull()
 
+	/**
+	 * Пустое дерево. Случайный ключ.
+	 * Ожидания: итератор успешно создан.
+	 */
+	@Test
+	public void iterator_emptyTree_randomKey (
+	) { // method body
+		final Integer key = rng.nextInt();
+		Assertions.assertNotNull(emptyTree.iterator(key), "Пустое дерево, случайный ключ. Итератор не существует");
+	} // iterator_emptyTree_randomKey()
+
+	/**
+	 * Дерево нечётных цифр. Ключ - минимальное целое.
+	 * Ожидания: итератор успешно создан.
+	 */
+	@Test
+	public void iterator_preFilledTree_minIntKey (
+	) { // method body
+		Assertions.assertNotNull(filledTree.iterator(Integer.MIN_VALUE), "Дерево нечётных цифр. Ключ - минимальное целое. Итератор не существует");
+	} // iterator_preFilledTree_minIntKey()
+
+	/**
+	 * Дерево нечётных цифр. Ключ - максимальное целое.
+	 * Ожидания: итератор успешно создан.
+	 */
+	@Test
+	public void iterator_preFilledTree_maxIntKey (
+	) { // method body
+		Assertions.assertNotNull(filledTree.iterator(Integer.MAX_VALUE), "Дерево нечётных цифр. Ключ - максимальное целое. Итератор не существует");
+	} // iterator_preFilledTree_maxIntKey()
+
+	/**
+	 * Дерево нечётных цифр. Выбранный элемент - число 2, отсутствующее в дереве.
+	 * Ожидания: итератор успешно создан.
+	 */
+	@Test
+	public void iterator_preFilledTree_item2 (
+	) { // method body
+		// arrange
+		final Long item = 2L;
+		final Integer key = keyExtractor.apply(item);
+		// act
+		final ListIterator<Long> iterator = filledTree.iterator(key);
+		// assert
+		Assertions.assertNotNull(iterator, "Дерево нечётных цифр. Выбранный элемент - число 2, отсутствующее в дереве. Итератор не существует");
+	} // iterator_preFilledTree_item2()
+
+	/**
+	 * Дерево нечётных цифр. Выбранный элемент - присутствующее в дереве число 3.
+	 * Ожидания: Итератор успешно создан.
+	 */
+	@Test
+	public void iterator_preFilledTree_item3 (
+	) { // method body
+		// arrange
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		// act
+		final ListIterator<Long> iterator = filledTree.iterator(key);
+		// assert
+		Assertions.assertNotNull(iterator, "Дерево нечётных цифр. Выбранный элемент - присутствующее в дереве число 3. Итератор не существует");
+	} // iterator_preFilledTree_item3()
+
 	// todo
 } // AvlTreeTests
