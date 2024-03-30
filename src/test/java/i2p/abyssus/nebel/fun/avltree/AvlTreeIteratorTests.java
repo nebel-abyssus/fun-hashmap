@@ -3,7 +3,9 @@ package i2p.abyssus.nebel.fun.avltree;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Comparator;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 
 /**
  * Тесты итератора элементов дерева.
@@ -11,6 +13,11 @@ import java.util.function.Function;
 public class AvlTreeIteratorTests {
 
 // instance fields
+
+	/**
+	 * ГПСЧ.
+	 */
+	private final RandomGenerator rng = ThreadLocalRandom.current();
 
 	/**
 	 * Экстрактор ключей.
