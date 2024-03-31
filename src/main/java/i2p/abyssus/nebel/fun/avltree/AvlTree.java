@@ -128,9 +128,9 @@ public class AvlTree <E, K> implements Iterable<E> {
 	// instance fields
 
 		/**
-		 * Согласованная версия дерева. При отличии от актуальной версии дерева, итератор выбрасывает исключение {@link ConcurrentModificationException}.
+		 * Сопоставленная итератору версия дерева. При отличии от актуальной версии дерева, итератор выбрасывает исключение {@link ConcurrentModificationException}.
 		 */
-		private long consistentTreeVersion;
+		private long matchedTreeVersion;
 
 		/**
 		 * Следующий узел, элемент которого возвращается при обращении к методу {@link #next()}.
@@ -166,7 +166,7 @@ public class AvlTree <E, K> implements Iterable<E> {
 		{ // method body
 			assert (previousNode == null) || (previousNode.nextNode == nextNode);
 			assert (nextNode == null) || (nextNode.previousNode == previousNode);
-			consistentTreeVersion = treeVersion;
+			matchedTreeVersion = treeVersion;
 			this.nextNode = nextNode;
 			this.previousNode = previousNode;
 			lastNodeMark = UNDEFINED;
