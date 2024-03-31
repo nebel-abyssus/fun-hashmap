@@ -135,7 +135,7 @@ public class AvlTreeIteratorTests {
 	 * Ожидания: метод {@link ListIterator#hasNext() hasNext()} не выбрасывает исключений.
 	 */
 	@Test
-	public void hasNext_afterModificationBySameIterator_noThrows (
+	public void hasNext_afterTreeModificationBySameIterator_noThrows (
 	) { // method body
 		// arrange
 		final ListIterator<Long> iterator = oddDigitsTree.iterator();
@@ -144,7 +144,7 @@ public class AvlTreeIteratorTests {
 		iterator.remove();
 		// assert
 		Assertions.assertDoesNotThrow(iterator::hasNext, "Модификация дерева, к которому присоединён итератор, тем же итератором. Метод hasNext() выбросил исключение");
-	} // hasNext_afterModificationBySameIterator_noThrows()
+	} // hasNext_afterTreeModificationBySameIterator_noThrows()
 
 	/**
 	 * Итератор перед пустым деревом.
