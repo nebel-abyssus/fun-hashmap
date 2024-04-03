@@ -191,12 +191,25 @@ public class AvlTree <E, K> implements Iterable<E> {
 			return (nextNode != null);
 		} // hasNext()
 
+		/**
+		 * Следующий элемент.
+		 * <p>Метод возвращает следующий элемент дерева, породившего данный итератор. Ключи возвращаемых элементов упорядочены по возрастанию, согласно компаратору, указанному при создании дерева.</p>
+		 * <p>Проверить наличие следующего элемента можно с помощью метода {@link #hasNext()}.</p>
+		 * @return Следующий элемент дерева.
+		 * @throws ConcurrentModificationException Если дерево было модифицировано, не с помощью средств, предоставляемых данным итератором.
+		 * @throws NoSuchElementException Если следующего элемента нет в наличии.
+		 */
 		@Override
 		public E next (
-		) throws NoSuchElementException
+		) throws ConcurrentModificationException,
+			NoSuchElementException
 		{ // method body
-			// todo
-			throw new NoSuchMethodError();
+			if (matchedTreeVersion != treeVersion) throw new ConcurrentModificationException();
+			if (nextNode == null) throw new NoSuchElementException();
+			previousNode = nextNode;
+			nextNode = nextNode.nextNode;
+			lastNodeMark = PREVIOUS_NODE;
+			return previousNode.item;
 		} // next()
 
 		@Override
