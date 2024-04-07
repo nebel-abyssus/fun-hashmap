@@ -212,11 +212,21 @@ public class AvlTree <E, K> implements Iterable<E> {
 			return previousNode.item;
 		} // next()
 
+		/**
+		 * Проверка наличия предшествующего элемента.
+		 * <p>Метод возвращает {@code true}, если предшествующий элемент может быть возвращён итератором, при обращении к методу {@link #previous()}. В противном случае, возвращается значение {@code false}.</p>
+		 * @return <ul>
+		 *     <li>{@code true} - Если предшествующий элемент может быть возвращён итератором.</li>
+		 *     <li>{@code false} - В противном случае.</li>
+		 * </ul>
+		 * @throws ConcurrentModificationException Если дерево, элементы которого перечисляет данный итератор, подверглось модификации не средствами данного итератора.
+		 */
 		@Override
 		public boolean hasPrevious (
-		) { // method body
-			// todo
-			throw new NoSuchMethodError();
+		) throws ConcurrentModificationException
+		{ // method body
+			if (matchedTreeVersion != treeVersion) throw new ConcurrentModificationException();
+			return (previousNode != null);
 		} // hasPrevious()
 
 		@Override
