@@ -380,5 +380,137 @@ public class AvlTreeIteratorTests {
 		} // while
 	} // next_randomItemsTree_itemKeysFormAscendingOrder()
 
+	/**
+	 * Очистка пустого дерева, к которому присоединён итератор.
+	 * Ожидания: метод {@link ListIterator#hasPrevious() hasPrevious()} выбрасывает {@link ConcurrentModificationException}.
+	 */
+	@Test
+	public void hasPrevious_afterClearEmptyTree_throwsCME (
+	) { // method body
+		// arrange
+		final ListIterator<Long> iterator = emptyTree.iterator();
+		// act
+		emptyTree.clear();
+		// assert
+		Assertions.assertThrows(ConcurrentModificationException.class, iterator::hasPrevious, "Очистка пустого дерева, к которому присоединён итератор. hasPrevious() не выбросил CME");
+	} // hasPrevious_afterClearEmptyTree_throwsCME()
+
+	/**
+	 * Добавление нового элемента в дерево, сопоставленное итератору.
+	 * Ожидания: метод {@link ListIterator#hasPrevious() hasPrevious()} выбрасывает {@link ConcurrentModificationException}.
+	 */
+	@Test
+	public void hasPrevious_afterPuttingNewItem_throwsCME (
+	) { // method body
+		// arrange
+		final Long newItem = rng.nextLong();
+		final ListIterator<Long> iterator = oddDigitsTree.iterator();
+		// act
+		oddDigitsTree.put(newItem);
+		// assert
+		Assertions.assertThrows(ConcurrentModificationException.class, iterator::hasPrevious, "Добавление нового элемента в дерево, сопоставленное итератору. hasPrevious() не выбросил CME");
+	} // hasPrevious_afterPuttingNewItem_throwsCME()
+
+	/**
+	 * Удаление элемента из дерева, сопоставленного итератору.
+	 * Ожидания: метод {@link ListIterator#hasPrevious() hasPrevious()} выбрасывает {@link ConcurrentModificationException}.
+	 */
+	@Test
+	public void hasPrevious_afterItemRemoving_throwsCME (
+	) { // method body
+		// arrange
+		final ListIterator<Long> iterator = oddDigitsTree.iterator();
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		// act
+		oddDigitsTree.remove(key);
+		// assert
+		Assertions.assertThrows(ConcurrentModificationException.class, iterator::hasPrevious, "Удаление элемента из дерева, сопоставленного итератору. hasPrevious() не выбросил CME");
+	} // hasPrevious_afterItemRemoving_throwsCME()
+
+	/**
+	 * Модификация дерева, сопоставленного итератору, другим итератором.
+	 * Ожидания: метод {@link ListIterator#hasPrevious() hasPrevious()} выбрасывает {@link ConcurrentModificationException}.
+	 */
+	@Test
+	public void hasPrevious_afterTreeModificationByAnotherIterator_throwsCME (
+	) { // method body
+		// arrange
+		final ListIterator<Long> iterator = oddDigitsTree.iterator();
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		final ListIterator<Long> anotherIterator = oddDigitsTree.iterator(key);
+		// act
+		anotherIterator.next();
+		anotherIterator.remove();
+		// assert
+		Assertions.assertThrows(ConcurrentModificationException.class, iterator::hasPrevious, "Модификация дерева, сопоставленного итератору, другим итератором. hasPrevious() не выбросил CME");
+	} // hasPrevious_afterTreeModificationByAnotherIterator_throwsCME()
+
+	/**
+	 * Модификация дерева, сопоставленного итератору, тем же итератором.
+	 * Ожидания: метод {@link ListIterator#hasPrevious() hasPrevious()} не выбрасывает исключений.
+	 */
+	@Test
+	public void hasPrevious_afterTreeModificationBySameIterator_noThrows (
+	) { // method body
+		// arrange
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		final ListIterator<Long> iterator = oddDigitsTree.iterator(key);
+		// act
+		iterator.next();
+		iterator.remove();
+		// assert
+		Assertions.assertDoesNotThrow(iterator::hasPrevious, "Модификация дерева, сопоставленного итератору, тем же итератором. hasPrevious() выбросил исключение");
+	} // hasPrevious_afterTreeModificationBySameIterator_noThrows()
+
+	/**
+	 * Итератор после пустого дерева.
+	 * Ожидания: метод {@link ListIterator#hasPrevious() hasPrevious()} возвращает {@code false}.
+	 */
+	@Test
+	public void hasPrevious_postEmptyTree_returnFalse (
+	) { // method body
+		Assertions.assertFalse(emptyTree.postLastIterator().hasPrevious(), "Итератор после пустого дерева. hasPrevious() не вернул false");
+	} // hasPrevious_postEmptyTree_returnFalse()
+
+	/**
+	 * Итератор после непустого дерева.
+	 * Ожидания: метод {@link ListIterator#hasPrevious() hasPrevious()} возвращает {@code true}.
+	 */
+	@Test
+	public void hasPrevious_postNonEmptyTree_returnTrue (
+	) { // method body
+		Assertions.assertTrue(oddDigitsTree.postLastIterator().hasPrevious(), "Итератор после непустого дерева. hasPrevious() не вернул true");
+	} // hasPrevious_postNonEmptyTree_returnTrue()
+
+	/**
+	 * Итератор перед непустым деревом.
+	 * Ожидания: метод {@link ListIterator#hasPrevious() hasPrevious()} возвращает {@code false}.
+	 */
+	@Test
+	public void hasPrevious_preNonEmptyTree_returnFalse (
+	) { // method body
+		Assertions.assertFalse(oddDigitsTree.preFirstIterator().hasPrevious(), "Итератор перед непустым деревом. hasPrevious() не вернул false");
+	} // hasPrevious_preNonEmptyTree_returnFalse()
+
+	/**
+	 * Итератор расположен после нескольких элементов.
+	 * Ожидания: метод {@link ListIterator#hasPrevious() hasPrevious()} возвращает {@code true}.
+	 */
+	@Test
+	public void hasPrevious_postFewItems_returnTrue (
+	) { // method body
+		// arrange
+		final Long item = 7L;
+		final Integer key = keyExtractor.apply(item);
+		final ListIterator<Long> iterator = oddDigitsTree.iterator(key);
+		// act
+		final boolean hasPrevious = iterator.hasPrevious();
+		// assert
+		Assertions.assertTrue(hasPrevious, "Итератор расположен после нескольких элементов. hasPrevious() не возвратил true");
+	} // hasPrevious_postFewItems_returnTrue()
+
 	// todo
 } // AvlTreeIteratorTests
