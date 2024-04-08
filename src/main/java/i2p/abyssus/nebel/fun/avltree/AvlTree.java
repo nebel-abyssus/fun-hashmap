@@ -229,12 +229,25 @@ public class AvlTree <E, K> implements Iterable<E> {
 			return (previousNode != null);
 		} // hasPrevious()
 
+		/**
+		 * Предшествующий элемент.
+		 * <p>Метод возвращает предшествующий элемент дерева, породившего данный итератор. Ключи возвращаемых элементов упорядочены по убыванию, согласно компаратору, указанному при создании дерева.</p>
+		 * <p>Проверить наличие предшествующего элемента можно с помощью метода {@link #hasPrevious()}.</p>
+		 * @return Предшествующий элемент дерева.
+		 * @throws ConcurrentModificationException Если дерево было модифицировано, не с помощью средств предоставляемых данным итератором.
+		 * @throws NoSuchElementException Если предшествующего элемента нет в наличии.
+		 */
 		@Override
 		public E previous (
-		) throws NoSuchElementException
+		) throws ConcurrentModificationException,
+			NoSuchElementException
 		{ // method body
-			// todo
-			throw new NoSuchMethodError();
+			if (matchedTreeVersion != treeVersion) throw new ConcurrentModificationException();
+			if (previousNode == null) throw new NoSuchElementException();
+			nextNode = previousNode;
+			previousNode = previousNode.previousNode;
+			lastNodeMark = NEXT_NODE;
+			return nextNode.item;
 		} // previous()
 
 		@Override
