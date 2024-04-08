@@ -512,5 +512,202 @@ public class AvlTreeIteratorTests {
 		Assertions.assertTrue(hasPrevious, "Итератор расположен после нескольких элементов. hasPrevious() не возвратил true");
 	} // hasPrevious_postFewItems_returnTrue()
 
+	/**
+	 * Очистка дерева, сопоставленного итератору.
+	 * Ожидания: метод {@link ListIterator#previous() previous()} выбрасывает {@link ConcurrentModificationException}.
+	 */
+	@Test
+	public void previous_afterEmptyTreeClearing_throwsCME (
+	) { // method body
+		// arrange
+		final ListIterator<Long> iterator = emptyTree.postLastIterator();
+		// act
+		emptyTree.clear();
+		// assert
+		Assertions.assertThrows(ConcurrentModificationException.class, iterator::previous, "Очистка дерева, сопоставленного итератору. previous() не выбросил CME");
+	} // previous_afterEmptyTreeClearing_throwsCME()
+
+	/**
+	 * Добавление нового элемента в дерево, сопоставленное итератору.
+	 * Ожидания: метод {@link ListIterator#previous() previous()} выбрасывает {@link ConcurrentModificationException}.
+	 */
+	@Test
+	public void previous_afterPuttingNewItem_throwsCME (
+	) { // method body
+		// arrange
+		final ListIterator<Long> iterator = oddDigitsTree.iterator();
+		final Long newItem = rng.nextLong();
+		// act
+		oddDigitsTree.put(newItem);
+		// assert
+		Assertions.assertThrows(ConcurrentModificationException.class, iterator::previous, "Добавление нового элемента в дерево, сопоставленное итератору. previous() не выбросил CME");
+	} // previous_afterPuttingNewItem_throwsCME()
+
+	/**
+	 * Удаление элемента из дерева, сопоставленного итератору.
+	 * Ожидания: метод {@link ListIterator#previous() previous()} выбрасывает {@link ConcurrentModificationException}.
+	 */
+	@Test
+	public void previous_afterItemRemoving_throwsCME (
+	) { // method body
+		// arrange
+		final ListIterator<Long> iterator = oddDigitsTree.postLastIterator();
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		// act
+		oddDigitsTree.remove(key);
+		// assert
+		Assertions.assertThrows(ConcurrentModificationException.class, iterator::previous, "Удаление элемента из дерева, сопоставленного итератору. previous() не выбросил CME");
+	} // previous_afterItemRemoving_throwsCME()
+
+	/**
+	 * Модификация дерева, сопоставленного итератору, другим итератором.
+	 * Ожидания: метод {@link ListIterator#previous() previous()} выбрасывает {@link ConcurrentModificationException}.
+	 */
+	@Test
+	public void previous_afterTreeModificationByAnotherIterator_throwsCME (
+	) { // method body
+		// arrange
+		final ListIterator<Long> iterator = oddDigitsTree.iterator();
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		final ListIterator<Long> anotherIterator = oddDigitsTree.iterator(key);
+		// act
+		anotherIterator.next();
+		anotherIterator.remove();
+		// assert
+		Assertions.assertThrows(ConcurrentModificationException.class, iterator::previous, "Модификация дерева, сопоставленного итератору, другим итератором. previous() не выбросил CME");
+	} // previous_afterTreeModificationByAnotherIterator_throwsCME()
+
+	/**
+	 * Итератор расположен после пустого дерева.
+	 * Ожидания: метод {@link ListIterator#previous() previos()} выбрасывает {@link NoSuchElementException}.
+	 */
+	@Test
+	public void previous_postEmptyTree_throwsNSEE (
+	) { // method body
+		Assertions.assertThrows(NoSuchElementException.class, emptyTree.postLastIterator()::previous, "Итератор расположен после пустого дерева. previous() не выбросил NSEE");
+	} // previous_postEmptyTree_throwsNSEE()
+
+	/**
+	 * Итератор расположен перед непустым деревом.
+	 * Ожидания: метод {@link ListIterator#previous() previos()} выбрасывает {@link NoSuchElementException}.
+	 */
+	@Test
+	public void previous_preNonEmptyTree_throwsNSEE (
+	) { // method body
+		Assertions.assertThrows(NoSuchElementException.class, oddDigitsTree.preFirstIterator()::previous, "Итератор расположен перед непустым деревом. previous() не выбросил NSEE");
+	} // previous_preNonEmptyTree_throwsNSEE()
+
+	/**
+	 * Модификация дерева, сопоставленного итератору, тем же итератором.
+	 * Ожидания: метод {@link ListIterator#previous() previous()} не выбрасывает исключений.
+	 */
+	@Test
+	public void previous_afterTreeModificationBySameIterator_noThrows (
+	) { // method body
+		// arrange
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		final ListIterator<Long> iterator = oddDigitsTree.iterator(key);
+		// act
+		iterator.next();
+		iterator.remove();
+		// assert
+		Assertions.assertDoesNotThrow(iterator::previous, "Модификация дерева, сопоставленного итератору, тем же итератором. previous() выбросил исключение");
+	} // previous_afterTreeModificationBySameIterator_noThrows()
+
+	/**
+	 * Итератор расположен после дерева нечётных цифр.
+	 * Ожидания: метод {@link ListIterator#previous() previous()} возвращает значение 9.
+	 */
+	@Test
+	public void previous_postOddDigitsTree_return9 (
+	) { // method body
+		// arrange
+		final Long expectedValue = 9L;
+		final ListIterator<Long> iterator = oddDigitsTree.postLastIterator();
+		// act
+		final Long actualValue = iterator.previous();
+		// assert
+		Assertions.assertEquals(expectedValue, actualValue, "Итератор расположен после дерева нечётных цифр. previous() не вернул значение 9");
+	} // previous_postOddDigitsTree_return9()
+
+	/**
+	 * Итератор расположен после случайной цифры, в дереве нечётных цифр.
+	 * Ожидания: метод {@link ListIterator#previous() previous()} возвращает значение цифры.
+	 */
+	@Test
+	public void previous_postRandomDigitInOddDigitsTree_returnDigitValue (
+	) { // method body
+		// arrange
+		final Long digitValue = rng.nextLong(5) * 2 + 1;
+		final Integer digitKey = keyExtractor.apply(digitValue);
+		final ListIterator<Long> iterator = oddDigitsTree.iterator(digitKey);
+		iterator.next();
+		// act
+		final Long actualValue = iterator.previous();
+		// assert
+		Assertions.assertEquals(digitValue, actualValue, "Итератор расположен после случайной цифры, в дереве нечётных цифр. previous() не вернул значение цифры");
+	} // previous_postRandomDigitInOddDigitsTree_returnDigitValue()
+
+	/**
+	 * Итератор расположен после дерева случайных элементов.
+	 * Ожидания: метод {@link ListIterator#previous() previous()} последовательно возвращает те же элементы, в том же объёме.
+	 */
+	@Test
+	public void previous_postRandomItemsTree_returnSameItems (
+	) { // method body
+		// arrange
+		final int MIN_N = 128;
+		final int MAX_N = 2048;
+		final int n = rng.nextInt(MIN_N, MAX_N + 1);
+		final NavigableMap<Integer, Long> stdTree = new TreeMap<Integer, Long>(keyComparator);
+		for (int i = n; i > 0; i--) {
+			final Long item = rng.nextLong();
+			final Integer key = keyExtractor.apply(item);
+			stdTree.put(key, item);
+			tree.put(item);
+		} // for
+		// act
+		final SequencedCollection<Long> expectedItems = stdTree.sequencedValues().reversed();
+		final ListIterator<Long> actualItems = tree.postLastIterator();
+		// assert
+		for (final Long expectedItem : expectedItems) {
+			final Long actualItem = actualItems.previous();
+			Assertions.assertSame(expectedItem, actualItem, "Итератор расположен после дерева случайных элементов. previous() не вернул ожидаемый элемент");
+		} // for
+		Assertions.assertFalse(actualItems.hasPrevious(), "Итератор расположен после дерева случайных элементов. Размеры перечислений значений не совпадают");
+	} // previous_postRandomItemsTree_returnSameItems()
+
+	/**
+	 * Итератор расположен после дерева случайных элементов.
+	 * Ожидания: ключи возвращаемых элементов образуют убывающую последовательность.
+	 */
+	@Test
+	public void previous_postRandomItemsTree_descendingItemKeys (
+	) { // method body
+		// arrange
+		final int MIN_N = 128;
+		final int MAX_N = 2048;
+		final int n = rng.nextInt(MIN_N, MAX_N + 1);
+		for (int i = n; i > 0; i--) {
+			final Long item = rng.nextLong();
+			tree.put(item);
+		} // for
+		// act
+		final ListIterator<Long> iterator = tree.postLastIterator();
+		// assert
+		Long nextItem = iterator.previous();
+		while (iterator.hasPrevious()) {
+			final Long previousItem = iterator.previous();
+			final Integer nextItemKey = keyExtractor.apply(nextItem);
+			final Integer previousItemKey = keyExtractor.apply(previousItem);
+			final boolean isDescended = (keyComparator.compare(previousItemKey, nextItemKey) < 0);
+			Assertions.assertTrue(isDescended, "Итератор расположен после дерева случайных элементов. Ключи элементов не образуют убывающую последовательность");
+			nextItem = previousItem;
+		} // while
+	} // previous_postRandomItemsTree_descendingItemKeys()
+
 	// todo
 } // AvlTreeIteratorTests
