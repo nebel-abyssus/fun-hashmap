@@ -709,5 +709,15 @@ public class AvlTreeIteratorTests {
 		} // while
 	} // previous_postRandomItemsTree_descendingItemKeys()
 
+	/**
+	 * Метод должен выбрасывать {@link UnsupportedOperationException} при любом обращении.
+	 * Ожидания: метод {@link ListIterator#nextIndex() nextIndex()} выбрасывает {@link UnsupportedOperationException}.
+	 */
+	@Test
+	public void nextIndex_throwsUOE (
+	) { // method body
+		Assertions.assertThrows(UnsupportedOperationException.class, oddDigitsTree.iterator()::nextIndex, "Метод должен выбрасывать UnsupportedOperationException при любом обращении. nextIndex() не выбросил UOE");
+	} // nextIndex_throwsUOE()
+
 	// todo
 } // AvlTreeIteratorTests
