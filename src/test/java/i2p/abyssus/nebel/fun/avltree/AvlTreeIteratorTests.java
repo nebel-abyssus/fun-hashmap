@@ -719,5 +719,15 @@ public class AvlTreeIteratorTests {
 		Assertions.assertThrows(UnsupportedOperationException.class, oddDigitsTree.iterator()::nextIndex, "Метод должен выбрасывать UnsupportedOperationException при любом обращении. nextIndex() не выбросил UOE");
 	} // nextIndex_throwsUOE()
 
+	/**
+	 * Метод должен выбрасывать {@link UnsupportedOperationException} при любом обращении.
+	 * Ожидания: метод {@link ListIterator#previousIndex() previousIndex()} выбрасывает {@link UnsupportedOperationException}.
+	 */
+	@Test
+	public void previousIndex_throwsUOE (
+	) { // method body
+		Assertions.assertThrows(UnsupportedOperationException.class, oddDigitsTree.iterator()::previousIndex, "Метод должен выбрасывать UnsupportedOperationException при любом обращении. previousIndex() не выбросил UOE");
+	} // previousIndex_throwsUOE()
+
 	// todo
 } // AvlTreeIteratorTests
