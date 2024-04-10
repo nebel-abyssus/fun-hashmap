@@ -264,12 +264,17 @@ public class AvlTree <E, K> implements Iterable<E> {
 			throw new UnsupportedOperationException();
 		} // nextIndex()
 
+		/**
+		 * Получение индекса предшествующего элемента.
+		 * <p>Метод не поддерживается итератором, и всегда выбрасывает исключение {@link UnsupportedOperationException}.</p>
+		 * @return Результат отсутствует.
+		 * @throws UnsupportedOperationException При любом обращении к данному методу.
+		 */
 		@Override
 		public int previousIndex (
 		) throws UnsupportedOperationException
 		{ // method body
-			// todo
-			throw new NoSuchMethodError();
+			throw new UnsupportedOperationException();
 		} // previousIndex()
 
 		@Override
