@@ -277,12 +277,33 @@ public class AvlTree <E, K> implements Iterable<E> {
 			throw new UnsupportedOperationException();
 		} // previousIndex()
 
+		/**
+		 * Удаление последнего возвращённого элемента.
+		 * <p>Метод удаляет из дерева последний возвращённый, при обращении к методам {@link #next()} и {@link #previous()}, элемент. Если таких обращений ещё не было с момента создания итератора, либо с момента последнего обращения к данному методу, то будет выброшено исключение {@link IllegalStateException}.</p>
+		 * @throws ConcurrentModificationException Если дерево было модифицировано с помощью средств, отличных от предоставляемых данным итератором.
+		 * @throws IllegalStateException Если не было обращений к методам {@link #next()}, или {@link #previous()} с момента создания итератора, или модификации дерева.
+		 */
 		@Override
 		public void remove (
-		) throws IllegalStateException
+		) throws ConcurrentModificationException,
+			IllegalStateException
 		{ // method body
-			// todo
-			throw new NoSuchMethodError();
+			if (matchedTreeVersion != treeVersion) throw new ConcurrentModificationException();
+			switch (lastNodeMark) {
+				case PREVIOUS_NODE -> {
+					final Node<E> tmp = previousNode.previousNode;
+					AvlTree.this.remove(keyExtractor.apply(previousNode.item));
+					previousNode = tmp;
+				} // case
+				case NEXT_NODE -> {
+					final Node<E> tmp = nextNode.nextNode;
+					AvlTree.this.remove(keyExtractor.apply(nextNode.item));
+					nextNode = tmp;
+				} // case
+				default -> throw new IllegalStateException();
+			} // switch
+			matchedTreeVersion = treeVersion;
+			lastNodeMark = UNDEFINED;
 		} // remove()
 
 		@Override
