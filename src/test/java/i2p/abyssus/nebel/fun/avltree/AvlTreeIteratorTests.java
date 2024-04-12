@@ -729,5 +729,136 @@ public class AvlTreeIteratorTests {
 		Assertions.assertThrows(UnsupportedOperationException.class, oddDigitsTree.iterator()::previousIndex, "Метод должен выбрасывать UnsupportedOperationException при любом обращении. previousIndex() не выбросил UOE");
 	} // previousIndex_throwsUOE()
 
+	/**
+	 * Очистка дерева, сопоставленного итератору.
+	 * Ожидания: метод {@link ListIterator#remove() remove()} выбрасывает {@link ConcurrentModificationException}.
+	 */
+	@Test
+	public void remove_treeClearing_throwsCME (
+	) { // method body
+		// arrange
+		final ListIterator<Long> iterator = emptyTree.iterator();
+		// act
+		emptyTree.clear();
+		// assert
+		Assertions.assertThrows(ConcurrentModificationException.class, iterator::remove, "Очистка дерева, сопоставленного итератору. remove() не выбросил CME");
+	} // remove_treeClearing_throwsCME()
+
+	/**
+	 * Добавление нового элемента в дерево, сопоставленное итератору.
+	 * Ожидания: метод {@link ListIterator#remove() remove()} выбрасывает {@link ConcurrentModificationException}.
+	 */
+	@Test
+	public void remove_puttingNewItem_throwsCME (
+	) { // method body
+		// arrange
+		final ListIterator<Long> iterator = oddDigitsTree.iterator();
+		final Long newItem = rng.nextLong();
+		// act
+		oddDigitsTree.put(newItem);
+		// assert
+		Assertions.assertThrows(ConcurrentModificationException.class, iterator::remove, "Добавление нового элемента в дерево, сопоставленное итератору. remove() не выбросил CME");
+	} // remove_puttingNewItem_throwsCME()
+
+	/**
+	 * Удаление элемента из дерева, сопоставленного итератору, средствами самого дерева.
+	 * Ожидания: метод {@link ListIterator#remove() remove()} выбрасывает {@link ConcurrentModificationException}.
+	 */
+	@Test
+	public void remove_itemRemovingByTree_throwsCME (
+	) { // method body
+		// arrange
+		final ListIterator<Long> iterator = oddDigitsTree.iterator();
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		// act
+		oddDigitsTree.remove(key);
+		// assert
+		Assertions.assertThrows(ConcurrentModificationException.class, iterator::remove, "Удаление элемента из дерева, сопоставленного итератору, средствами самого дерева. remove() не выбросил CME");
+	} // remove_itemRemovingByTree_throwsCME()
+
+	/**
+	 * Модификация дерева сопоставленного итератору, другим итератором.
+	 * Ожидания: метод {@link ListIterator#remove() remove()} выбрасывает {@link ConcurrentModificationException}.
+	 */
+	@Test
+	public void remove_afterTreeModificationByOtherIterator_throwsCME (
+	) { // method body
+		// arrange
+		final ListIterator<Long> iterator = oddDigitsTree.iterator();
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		final ListIterator<Long> otherIterator = oddDigitsTree.iterator(key);
+		// act
+		otherIterator.next();
+		otherIterator.remove();
+		// assert
+		Assertions.assertThrows(ConcurrentModificationException.class, iterator::remove, "Модификация дерева сопоставленного итератору, другим итератором. remove() не выбросил CME");
+	} // remove_afterTreeModificationByOtherIterator_throwsCME()
+
+	/**
+	 * Попытка удаления элемента, до его получения.
+	 * Ожидания: метод {@link ListIterator#remove() remove()} выбрасывает {@link IllegalStateException}.
+	 */
+	@Test
+	public void remove_beforeItemReceiving_throwsISE (
+	) { // method body
+		Assertions.assertThrows(IllegalStateException.class, oddDigitsTree.iterator()::remove, "Попытка удаления элемента, до его получения. remove() не выбросил ISE");
+	} // remove_beforeItemReceiving_throwsISE()
+
+	/**
+	 * Попытка удаления элемента, сразу после модификации дерева тем же итератором.
+	 * Ожидания: метод {@link ListIterator#remove() remove()} выбрасывает {@link IllegalStateException}.
+	 */
+	@Test
+	public void remove_afterTreeModificationBySameIterator_throwsISE (
+	) { // method body
+		// arrange
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		final ListIterator<Long> iterator = oddDigitsTree.iterator(key);
+		// act
+		iterator.next();
+		iterator.remove();
+		// assert
+		Assertions.assertThrows(IllegalStateException.class, iterator::remove, "Попытка удаления элемента, сразу после модификации дерева тем же итератором. remove() не выбросил ISE");
+	} // remove_afterTreeModificationBySameIterator_throwsISE()
+
+	/**
+	 * Удаление элемента, после его получения методом {@link ListIterator#next() next()}.
+	 * Ожидания: выбранный элемент удалён из дерева.
+	 */
+	@Test
+	public void remove_afterNextCalling_itemRemoved (
+	) { // method body
+		// arrange
+		final Long item = 3L;
+		final Integer key = keyExtractor.apply(item);
+		final ListIterator<Long> iterator = oddDigitsTree.iterator(key);
+		// act
+		iterator.next();
+		iterator.remove();
+		// assert
+		Assertions.assertNull(oddDigitsTree.findItemByKey(key), "Удаление элемента, после его получения методом next(). Удалённый элемент найден в дереве");
+	} // remove_afterNextCalling_itemRemoved()
+
+	/**
+	 * Удаление элемента, после его получения методом {@link ListIterator#previous() previous()}.
+	 * Ожидания: выбранный элемент удалён из дерева.
+	 */
+	@Test
+	public void remove_afterPreviousCalling_itemRemoved (
+	) { // method body
+		// arrange
+		final Long nextItem = 5L;
+		final Integer nextItemKey = oddDigitsTree.keyExtractor().apply(nextItem);
+		final ListIterator<Long> iterator = oddDigitsTree.iterator(nextItemKey);
+		// act
+		final Long targetItem = iterator.previous();
+		iterator.remove();
+		// assert
+		Assertions.assertNull(oddDigitsTree.findItem(targetItem), "Удаление элемента, после его получения методом previous(). Удалённый элемент найден в дереве");
+	} // remove_afterPreviousCalling_itemRemoved()
+
 	// todo
 } // AvlTreeIteratorTests
