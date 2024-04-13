@@ -876,5 +876,19 @@ public class AvlTreeIteratorTests {
 		Assertions.assertThrows(UnsupportedOperationException.class, () -> iterator.set(item), "Метод должен выбрасывать UnsupportedOperationException при любом обращении. set() не выбросил UOE");
 	} // set_throwsUOE()
 
+	/**
+	 * Метод должен выбрасывать {@link UnsupportedOperationException} при любом обращении.
+	 * Ожидания: метод {@link ListIterator#add(Object) add()} выбрасывает {@link UnsupportedOperationException}.
+	 */
+	@Test
+	public void add_throwsUOE (
+	) { // method body
+		// arrange
+		final Long item = rng.nextLong();
+		final ListIterator<Long> iterator = tree.iterator();
+		// assert
+		Assertions.assertThrows(UnsupportedOperationException.class, () -> iterator.add(item), "Метод должен выбрасывать UnsupportedOperationException при любом обращении. add() не выбросил UOE");
+	} // add_throwsUOE()
+
 	// todo
 } // AvlTreeIteratorTests
