@@ -320,13 +320,18 @@ public class AvlTree <E, K> implements Iterable<E> {
 			throw new UnsupportedOperationException();
 		} // set()
 
+		/**
+		 * Добавление элемента.
+		 * <p>Метод не поддерживается итератором, и всегда выбрасывает исключение {@link UnsupportedOperationException}.</p>
+		 * @param item Новый элемент.
+		 * @throws UnsupportedOperationException При любом обращении к данному методу.
+		 */
 		@Override
 		public void add (
 			final E item
 		) throws UnsupportedOperationException
 		{ // method body
-			// todo
-			throw new NoSuchMethodError();
+			throw new UnsupportedOperationException();
 		} // add()
 
 		// todo
