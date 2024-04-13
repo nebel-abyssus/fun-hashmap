@@ -860,5 +860,21 @@ public class AvlTreeIteratorTests {
 		Assertions.assertNull(oddDigitsTree.findItem(targetItem), "Удаление элемента, после его получения методом previous(). Удалённый элемент найден в дереве");
 	} // remove_afterPreviousCalling_itemRemoved()
 
+	/**
+	 * Метод должен выбрасывать {@link UnsupportedOperationException} при любом обращении.
+	 * Ожидания: метод {@link ListIterator#set(Object) set()} выбрасывает {@link UnsupportedOperationException}.
+	 */
+	@Test
+	public void set_throwsUOE (
+	) { // method body
+		// arrange
+		final Long item = rng.nextLong();
+		final ListIterator<Long> iterator = oddDigitsTree.iterator();
+		// act
+		iterator.next();
+		// assert
+		Assertions.assertThrows(UnsupportedOperationException.class, () -> iterator.set(item), "Метод должен выбрасывать UnsupportedOperationException при любом обращении. set() не выбросил UOE");
+	} // set_throwsUOE()
+
 	// todo
 } // AvlTreeIteratorTests
