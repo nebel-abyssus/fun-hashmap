@@ -289,19 +289,14 @@ public class AvlTree <E, K> implements Iterable<E> {
 			IllegalStateException
 		{ // method body
 			if (matchedTreeVersion != treeVersion) throw new ConcurrentModificationException();
-			switch (lastNodeMark) {
-				case PREVIOUS_NODE -> {
-					final Node<E> tmp = previousNode.previousNode;
-					AvlTree.this.remove(keyExtractor.apply(previousNode.item));
-					previousNode = tmp;
-				} // case
-				case NEXT_NODE -> {
-					final Node<E> tmp = nextNode.nextNode;
-					AvlTree.this.remove(keyExtractor.apply(nextNode.item));
-					nextNode = tmp;
-				} // case
+			final K key = switch (lastNodeMark) {
+				case PREVIOUS_NODE -> keyExtractor.apply(previousNode.item);
+				case NEXT_NODE -> keyExtractor.apply(nextNode.item);
 				default -> throw new IllegalStateException();
-			} // switch
+			}; // switch expression
+			AvlTree.this.remove(key);
+			/* Можно было бы не искать позицию удалённого ключа, а, воспользовавшись тем, что узел, при удалении, очищается, определять удаляемый узел из маркированного, и его соседей, при необходимости (например случай, когда дерево содержит два элемента, и удаляется тот, который в корне) сравнивая с корневым узлом, после чего проводя одну операцию сравнения по ключу. Но это, кмк, не слишком технологичненько, так как ставит нас в зависимость от внутренней механики метода удаления элементов (в частности того, что удаляемый узел очищается). Поэтому, я выбрал более технологичный подход, с поиском позиции удалённого ключа. */
+			setPreKeyPosition(key);
 			matchedTreeVersion = treeVersion;
 			lastNodeMark = UNDEFINED;
 		} // remove()
@@ -333,6 +328,31 @@ public class AvlTree <E, K> implements Iterable<E> {
 		{ // method body
 			throw new UnsupportedOperationException();
 		} // add()
+
+		/**
+		 * Установка позиции итератора перед элементом с указанным ключом.
+		 * <p>Метод изменяет позицию итератора, устанавливая его перед элементом с указанным ключом, или тем местом в последовательности, где он мог бы быть.</p>
+		 * <p>Метод не производит проверок на соответствие текущей версии дерева, сопоставленной итератору, безусловно перемещая последний.</p>
+		 * @param key Выбранный ключ.
+		 */
+		private void setPreKeyPosition (
+			final K key
+		) { // method body
+			final Deque<Node<E>> path = findPathByKey(key);
+			final Node<E> top = path.peek();
+			if (top != null) {
+				if (keyComparator.compare(key, keyExtractor.apply(top.item)) <= 0) {
+					nextNode = top;
+					previousNode = top.previousNode;
+				} else {
+					nextNode = top.nextNode;
+					previousNode = top;
+				} // if
+			} else {
+				nextNode = null;
+				previousNode = null;
+			} // if
+		} // setPreKeyPosition()
 
 		// todo
 	} // TreeIterator
