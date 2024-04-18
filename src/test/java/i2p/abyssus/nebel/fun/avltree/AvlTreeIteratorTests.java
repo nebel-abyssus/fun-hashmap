@@ -861,6 +861,42 @@ public class AvlTreeIteratorTests {
 	} // remove_afterPreviousCalling_itemRemoved()
 
 	/**
+	 * Удаление всех элементов из дерева, сопоставленного итератору. Получение элементов методом {@link ListIterator#next() next()}.
+	 * Ожидания: дерево пусто.
+	 */
+	@Test
+	public void remove_removingAllItemsByNext_treeIsEmpty (
+	) { // method body
+		// arrange
+		final Iterator<Long> iterator = oddDigitsTree.iterator();
+		// act
+		while (iterator.hasNext()) {
+			iterator.next();
+			iterator.remove();
+		} // while
+		// assert
+		Assertions.assertTrue(oddDigitsTree.isEmpty(), "Удаление всех элементов из дерева, сопоставленного итератору. Получение элементов методом next(). Дерево не пусто");
+	} // remove_removingAllItemsByNext_treeIsEmpty()
+
+	/**
+	 * Удаление всех элементов из дерева, сопоставленного итератору. Получение элементов методом {@link ListIterator#previous() previous()}.
+	 * Ожидания: дерево пусто.
+	 */
+	@Test
+	public void remove_removingAllItemsByPrevious_treeIsEmpty (
+	) { // method body
+		// arrange
+		final ListIterator<Long> iterator = oddDigitsTree.postLastIterator();
+		// act
+		while (iterator.hasPrevious()) {
+			iterator.previous();
+			iterator.remove();
+		} // while
+		// assert
+		Assertions.assertTrue(oddDigitsTree.isEmpty(), "Удаление всех элементов из дерева, сопоставленного итератору. Получение элементов методом previous(). Дерево не пусто");
+	} // remove_removingAllItemsByPrevious_treeIsEmpty()
+
+	/**
 	 * Метод должен выбрасывать {@link UnsupportedOperationException} при любом обращении.
 	 * Ожидания: метод {@link ListIterator#set(Object) set()} выбрасывает {@link UnsupportedOperationException}.
 	 */
