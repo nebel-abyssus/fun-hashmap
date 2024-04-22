@@ -6,7 +6,7 @@
 
 	<groupId>i2p.abyssus.nebel.fun</groupId>
 	<artifactId>fun-hashmap</artifactId>
-	<version>1.0.0</version>
+	<version>0.1.0</version>
 	<description>Реализация hashmap, созданная в целях развлечения</description>
 
 	<properties>
