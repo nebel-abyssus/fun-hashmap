@@ -71,7 +71,7 @@
 				<version>${maven.plugin.maven-javadoc-plugin.version}</version>
 				<configuration>
 					<detectLinks>false</detectLinks>
-					<show>private</show>
+					<show>protected</show>
 				</configuration>
 			</plugin>
 		</plugins>
