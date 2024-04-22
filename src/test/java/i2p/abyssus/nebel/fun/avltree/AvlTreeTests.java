@@ -718,5 +718,4 @@ public class AvlTreeTests {
 		Assertions.assertNotNull(iterator, "Дерево нечётных цифр. Выбранный элемент - присутствующее в дереве число 3. Итератор не существует");
 	} // iterator_preFilledTree_item3()
 
-	// todo
 } // AvlTreeTests

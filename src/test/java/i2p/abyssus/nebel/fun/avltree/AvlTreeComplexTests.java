@@ -157,5 +157,4 @@ public class AvlTreeComplexTests {
 		Assertions.assertFalse(iterator.hasNext(), "Удаление случайных элементов итератором. Сверка количества элементов. В тестируемом дереве лишние элементы");
 	} // iteratorRemove_removingRandomItems_allRemainingItems()
 
-	// todo
 } // AvlTreeComplexTests

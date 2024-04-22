@@ -354,7 +354,6 @@ public class AvlTree <E, K> implements Iterable<E> {
 			} // if
 		} // setPreKeyPosition()
 
-		// todo
 	} // TreeIterator
 
 // static methods
@@ -1057,5 +1056,4 @@ public class AvlTree <E, K> implements Iterable<E> {
 		return new TreeIterator(previousNode, nextNode);
 	} // iteratorOfPrevious()
 
-	// todo
 } // AvlTree

@@ -926,5 +926,4 @@ public class AvlTreeIteratorTests {
 		Assertions.assertThrows(UnsupportedOperationException.class, () -> iterator.add(item), "Метод должен выбрасывать UnsupportedOperationException при любом обращении. add() не выбросил UOE");
 	} // add_throwsUOE()
 
-	// todo
 } // AvlTreeIteratorTests
